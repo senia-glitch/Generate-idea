@@ -62,7 +62,7 @@ FORMAT_RULES = (
 def render_task(element: Element, contracts: list, pack: ContextPack, *, schema: dict, result_file: str,
                 domain_name: str = "",
                 feedback: list, iteration: int, autonomous: bool, prepared: dict | None = None,
-                repair_errors: list[str] | None = None) -> str:
+                repair_errors: list[str] | None = None, command: str = "reqpipe") -> str:
     """Текст задачи для агента: карточка эталонной схемы + пакет контекста + формат ответа."""
     ins = element.instructions
     out = [f"# Задача этапа {element.num} «{element.title}»", "",
@@ -109,7 +109,7 @@ def render_task(element: Element, contracts: list, pack: ContextPack, *, schema:
     out += ["", "## Формат результата",
             "Верни **один JSON-объект** строго по схеме ниже — без пояснений вне JSON.",
             f"Если конвейер ведёшь ты сам (режим manual): запиши JSON в файл `{result_file}` и выполни "
-            f"`reqpipe submit {element.id} \"{result_file}\"`.",
+            f"`{command} submit {element.id} \"{result_file}\"`.",
             "Правила:"] + [f"- {r}" for r in FORMAT_RULES]
     out += ["", "```json", json.dumps(schema, ensure_ascii=False), "```"]
     return "\n".join(out) + "\n"

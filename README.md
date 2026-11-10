@@ -3,7 +3,252 @@
 Рабочий прототип системы по эталонной схеме [`requirements-pipeline.html`](requirements-pipeline.html):
 сырая идея проходит исследование, стратегию, формализацию и каскад проверок качества и превращается в
 формализованный, согласованный и полный набор функциональных требований (SRS) для системы, превосходящей
-конкурентов. Этапы выполняют AI-агенты **Claude Code** и **OpenCode**; LLM по умолчанию не выбраны.
+конкурентов. Этапы выполняют AI-агенты **Claude Code** и **OpenCode**; LLM по умолчанию не выбраны —
+используется модель, настроенная в самом агенте.
+
+## Что работает из коробки, а что нужно сделать руками
+
+| | |
+|---|---|
+| ✅ Само | Пакет ставится одной командой в любое окружение Python 3.11+; команда `reqpipe`, демо без LLM |
+| ✅ Само | После `reqpipe install-skills --global` оба агента видят скиллы в любой папке и вызывают пакет из вашего виртуального окружения без его активации |
+| ✋ Руками | Скиллы не ставятся при `pip install` — pip не пишет в профиль агентов. Нужен один шаг: [шаг 6](#шаг-6-подключить-скиллы-к-агентам) |
+| ✋ Руками | Агенты (Claude Code или OpenCode) устанавливаются и авторизуются отдельно: [шаг 5](#шаг-5-установить-и-авторизовать-агента) |
+| ✋ Руками | Тест с реальными пользователями (этап 5.5) — внешний: результаты сессий присылаете вы |
+
+---
+
+## Установка с нуля — по шагам
+
+Пример ниже ставит пакет в **пустое виртуальное окружение в отдельной папке на рабочем столе**
+(`reqpipe-env`), а работа с идеей идёт в другой папке (`my-idea`). Команды для Windows — в PowerShell,
+для macOS и Linux — в терминале.
+
+### Шаг 1. Проверить Python 3.11 или новее
+
+Windows (PowerShell):
+
+```powershell
+python --version
+```
+
+macOS / Linux:
+
+```bash
+python3 --version
+```
+
+Если Python нет или версия ниже 3.11 — установите с [python.org](https://www.python.org/downloads/).
+На Windows в установщике отметьте **Add python.exe to PATH**.
+
+### Шаг 2. Создать папку на рабочем столе и пустое виртуальное окружение
+
+Windows (PowerShell; путь к рабочему столу берётся из системы, в том числе если он в OneDrive):
+
+```powershell
+$desk = [Environment]::GetFolderPath('Desktop')
+New-Item -ItemType Directory -Force "$desk\reqpipe-env" | Out-Null
+Set-Location "$desk\reqpipe-env"
+python -m venv .venv
+```
+
+macOS / Linux:
+
+```bash
+mkdir -p ~/Desktop/reqpipe-env && cd ~/Desktop/reqpipe-env
+python3 -m venv .venv
+```
+
+Окружение `.venv` пустое и изолированное. Активировать его не нужно: дальше всё вызывается через Python
+этого окружения по полному пути.
+
+### Шаг 3. Установить пакет с GitHub в это окружение
+
+Windows:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install https://github.com/senia-glitch/Generate-idea/archive/refs/heads/main.zip
+```
+
+macOS / Linux:
+
+```bash
+.venv/bin/python -m pip install https://github.com/senia-glitch/Generate-idea/archive/refs/heads/main.zip
+```
+
+Git для этого не нужен. Если Git есть, можно и так: `… -m pip install git+https://github.com/senia-glitch/Generate-idea.git`.
+
+### Шаг 4. Проверить установку
+
+Windows:
+
+```powershell
+.\.venv\Scripts\reqpipe.exe doctor
+```
+
+macOS / Linux:
+
+```bash
+.venv/bin/reqpipe doctor
+```
+
+`doctor` покажет версию, как вызывается эта установка, найдены ли агенты `claude` и `opencode` и
+установлены ли скиллы. Агентов и скиллов пока может не быть — это шаги 5 и 6.
+
+### Шаг 5. Установить и авторизовать агента
+
+Достаточно одного агента; можно оба.
+
+**Claude Code** — установка (подробнее: [code.claude.com/docs/en/setup](https://code.claude.com/docs/en/setup);
+на Windows желательно поставить и [Git for Windows](https://git-scm.com/download/win) — тогда агент работает
+через Bash, иначе через PowerShell):
+
+Windows (PowerShell):
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+macOS / Linux:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Затем один раз запустите `claude` и войдите в аккаунт.
+
+**OpenCode** — установка (подробнее: [opencode.ai/docs](https://opencode.ai/docs)); нужен Node.js:
+
+```bash
+npm install -g opencode-ai
+```
+
+Затем подключите провайдера модели:
+
+```bash
+opencode auth login
+```
+
+### Шаг 6. Подключить скиллы к агентам
+
+Windows:
+
+```powershell
+.\.venv\Scripts\reqpipe.exe install-skills --global
+```
+
+macOS / Linux:
+
+```bash
+.venv/bin/reqpipe install-skills --global
+```
+
+Команда кладёт скиллы `reqpipe-pipeline` (ведёт конвейер) и `reqpipe-stage` (выполняет один этап):
+
+* для Claude Code — в `~/.claude/skills/`;
+* для OpenCode — в `~/.config/opencode/skills/` (у OpenCode эта папка приоритетнее `~/.claude/skills`,
+  поэтому каждый агент получает свою версию).
+
+В скиллы записывается точный вызов этой установки — `"<путь>/.venv/…/python" -m reqpipe`, — поэтому агент
+найдёт пакет в любой папке, даже если окружение не активировано. Если вы переместите или пересоздадите
+`reqpipe-env`, повторите этот шаг. Если агент уже был открыт — перезапустите его.
+
+Скиллы только для одного проекта вместо всего профиля: `install-skills --dest <папка проекта>`.
+
+### Шаг 7. Создать папку для идеи и запустить агента
+
+Windows:
+
+```powershell
+New-Item -ItemType Directory -Force "$desk\my-idea" | Out-Null
+Set-Location "$desk\my-idea"
+claude
+```
+
+macOS / Linux:
+
+```bash
+mkdir -p ~/Desktop/my-idea && cd ~/Desktop/my-idea && claude
+```
+
+Вместо `claude` можно запустить `opencode`. Напишите агенту:
+
+> Запусти конвейер требований для идеи: сервис записи к врачу без звонков
+
+Агент сам подхватит скилл `reqpipe-pipeline` (явно: `/reqpipe-pipeline` в Claude Code, `@reqpipe-pipeline`
+в OpenCode), создаст рабочую область `my-idea\.reqpipe`, будет выполнять этапы и спрашивать вас на
+контрольных точках. Claude Code при первых командах `reqpipe` попросит разрешение — выберите «разрешать
+всегда» для них. Результат — `my-idea\.reqpipe\output\SRS.md`.
+
+### Шаг 8 (вариант). Пакет сам вызывает агентов — без диалога
+
+Каждый этап запускается отдельной неинтерактивной сессией агента; на контрольных точках `run` спрашивает
+вас в терминале.
+
+Windows:
+
+```powershell
+$rp = "$desk\reqpipe-env\.venv\Scripts\reqpipe.exe"
+Set-Location "$desk\my-idea"
+& $rp init --idea-text "Сервис записи к врачу без звонков" --executor claude-code
+& $rp run
+```
+
+macOS / Linux:
+
+```bash
+cd ~/Desktop/my-idea
+~/Desktop/reqpipe-env/.venv/bin/reqpipe init --idea-text "Сервис записи к врачу без звонков" --executor claude-code
+~/Desktop/reqpipe-env/.venv/bin/reqpipe run
+```
+
+С OpenCode — `--executor opencode` (в OpenCode должна быть выбрана модель по умолчанию, либо укажите
+`model` в `.reqpipe/reqpipe.toml`). Коды выхода `run`: 0 — готово, 3 — ждём решения человека, 1 — ошибка.
+
+### Шаг 9 (по желанию). Проверить всю цепочку без LLM
+
+Mock-исполнитель отвечает эталонными данными: весь конвейер проходит за секунды, бесплатно.
+
+Windows:
+
+```powershell
+Set-Location "$desk\reqpipe-env"
+.\.venv\Scripts\reqpipe.exe init -w demo --idea-text "Тест" --executor mock --autonomous
+.\.venv\Scripts\reqpipe.exe run -w demo
+```
+
+macOS / Linux:
+
+```bash
+cd ~/Desktop/reqpipe-env
+.venv/bin/reqpipe init -w demo --idea-text "Тест" --executor mock --autonomous
+.venv/bin/reqpipe run -w demo
+```
+
+### Обновление
+
+Windows:
+
+```powershell
+Set-Location "$desk\reqpipe-env"
+.\.venv\Scripts\python.exe -m pip install --upgrade --force-reinstall https://github.com/senia-glitch/Generate-idea/archive/refs/heads/main.zip
+.\.venv\Scripts\reqpipe.exe install-skills --global
+```
+
+macOS / Linux:
+
+```bash
+cd ~/Desktop/reqpipe-env
+.venv/bin/python -m pip install --upgrade --force-reinstall https://github.com/senia-glitch/Generate-idea/archive/refs/heads/main.zip
+.venv/bin/reqpipe install-skills --global
+```
+
+### Удаление
+
+Удалите папку `reqpipe-env` и папки скиллов `reqpipe-pipeline`, `reqpipe-stage` из `~/.claude/skills/`
+и `~/.config/opencode/skills/`.
+
+---
 
 ## Правила архитектуры
 
@@ -33,56 +278,12 @@
 | Выход | `result` | ✓ сборка SRS |
 | Сквозной слой | `platform` | оркестратор · менеджер контекста · база знаний · граф трассируемости · контрольные точки |
 
-## Установка
-
-```bash
-python -m pip install -e .
-```
-
-```bash
-reqpipe doctor
-```
-
-## Три способа запуска
-
-**1. Агент ведёт конвейер** (рекомендуется): скиллы `reqpipe-pipeline` и `reqpipe-stage` уже лежат в
-`.claude/skills/` и `.opencode/skills/` (переустановка: `reqpipe install-skills`). Откройте Claude Code или
-OpenCode в этой папке и попросите: «Запусти конвейер требований для идеи: …». Агент сам создаст рабочую
-область, будет брать задачи `reqpipe next`, выполнять их (веб-поиск — для исследований), сдавать
-`reqpipe submit` и спрашивать вас на контрольных точках.
-
-**2. Пакет ведёт агентов** — каждый этап запускается отдельной неинтерактивной сессией
-(`claude -p` или `opencode run`), то есть агент видит только пакет контекста своего этапа:
-
-```bash
-reqpipe init --idea idea.md --executor claude-code
-```
-
-```bash
-reqpipe run
-```
-
-На контрольных точках `run` спрашивает в терминале; `--no-input` — остановиться и ждать
-`reqpipe approve|reject`. Коды выхода: 0 — готово, 3 — ждём человека, 1 — ошибка.
-
-**3. Демо без LLM** — mock-исполнитель с эталонными ответами, вся цепочка за секунды (с демонстрационным
-возвратом G1 → 4.3):
-
-```bash
-reqpipe init -w demo --idea-text "Сервис записи к врачу без звонков" --executor mock --autonomous
-```
-
-```bash
-reqpipe run -w demo
-```
-
 ## Настройки (`.reqpipe/reqpipe.toml`)
 
 * `executor` — `manual` (ведёт агент) · `claude-code` · `opencode` · `mock`.
 * Модель: пусто — модель по умолчанию в агенте. Задать: `[executor."claude-code"] model = "opus"`,
   `[executor.opencode] model = "provider/model"`.
-* Этап на другом агенте (например, независимый критик G2):
-  `[elements.critic]` → `executor = "opencode"`.
+* Этап на другом агенте (например, независимый критик G2): `[elements.critic]` → `executor = "opencode"`.
 * `autonomous = true` (или `reqpipe autonomy on`) — решения на контрольных точках принимает агент-арбитр:
   по правилам (`arbiter = "rules"`) или агентом (`arbiter = "executor"`); решения с уверенностью ниже
   `arbiter_min_confidence` попадают в SRS как «просмотреть людям».
@@ -116,7 +317,7 @@ reqpipe run -w demo
 
 `init` · `status` · `next` · `submit` · `submit-external` · `approve` · `reject` · `waive` · `rerun` ·
 `run` · `autonomy on|off` · `spec` (домены, контракты, петли) · `schema <этап>` · `check-reference` ·
-`install-skills` · `doctor`. Все поддерживают `-w <папка>` и `--json`.
+`install-skills [--global]` · `doctor`. Все поддерживают `-w <папка>` и `--json`.
 
 ## Доработки требований относительно схемы
 
@@ -138,12 +339,17 @@ reqpipe run -w demo
   детерминированно, без LLM-суммаризации.
 * В режиме `run` интервью 1.1 не может спросить автора: открытые вопросы показываются на контрольной точке,
   ответы передаются через `reqpipe reject clarify --comment "ответы…"`. Настоящий диалог — в режиме,
-  когда конвейер ведёт агент.
+  когда конвейер ведёт агент (шаг 7).
 * В Claude Code каждая неинтерактивная сессия несёт накладные расходы на системный промпт (порядка $0,3 на
   первый вызов без кеша) — учитывайте это сверх оценки калькулятора на схеме.
 
 ## Разработка
 
 ```bash
+git clone https://github.com/senia-glitch/Generate-idea.git
+cd Generate-idea
+python -m pip install -e ".[dev]"
+reqpipe install-skills --dest .
 python -m pytest
+reqpipe check-reference
 ```

@@ -68,6 +68,7 @@ class Engine:
         self.state = workspace.load_state()
         self.factory = executor_factory
         self.checkpoints = Checkpoints(workspace, self.config)
+        self.command = "reqpipe"   # как вызывать эту установку в подсказках для агента
         self._lock = threading.RLock()
         for element in registry.stages:
             self.state.elements.setdefault(element.id, ElementState())
@@ -149,7 +150,7 @@ class Engine:
                 element, self.reg.incoming(element_id), pack, schema=schema, result_file=str(result_file),
                 domain_name=self.reg.domains[element.domain].name,
                 feedback=ctx.feedback, iteration=ctx.iteration, autonomous=self.config.autonomous,
-                prepared=prepared, repair_errors=repair_errors,
+                prepared=prepared, repair_errors=repair_errors, command=self.command,
             )
             self.ws.write_text(task_rel, text)
             self.ws.write_json(f"schemas/{element_id}.json", schema)
@@ -458,7 +459,7 @@ class Engine:
             "task_file": str(self.ws.path(st.task_file)), "schema_file": str(self.ws.path(st.schema_file)),
             "result_file": str(result), "capabilities": sorted(element.capabilities),
             "iteration": st.version, "feedback": len(st.feedback), "autonomous": self.config.autonomous,
-            "submit": f'reqpipe submit {element_id} "{result}" -w "{self.ws.root}"',
+            "submit": f'{self.command} submit {element_id} "{result}" -w "{self.ws.root}"',
         })
 
     def _approval_action(self, element_id: str) -> Action:
@@ -482,8 +483,8 @@ class Engine:
             "num": element.num, "title": element.title, "checkpoint": st.checkpoint or "approval",
             "question": question, "summary": details, "hitl": element.instructions.hitl,
             "artifact_file": str(self.ws.path(f"artifacts/{element_id}.json")),
-            "approve": f"reqpipe approve {element_id}{w}",
-            "reject": f'reqpipe reject {element_id} --comment "<что исправить>"{w}',
+            "approve": f"{self.command} approve {element_id}{w}",
+            "reject": f'{self.command} reject {element_id} --comment "<что исправить>"{w}',
         })
 
     def _external_action(self, element_id: str) -> Action:
@@ -496,8 +497,8 @@ class Engine:
             "plan_file": str(self.ws.path(f"results/{element_id}.plan.json")),
             "prototype": str(self.ws.path(plan.get("_prototype_path", ""))) if plan.get("_prototype_path") else "",
             "results_schema": element.external_model.model_json_schema() if element.external_model else {},
-            "submit": f'reqpipe submit-external {element_id} "<results.json>"{w}',
-            "waive": f'reqpipe waive {element_id} --reason "<почему пропускаем>"{w}',
+            "submit": f'{self.command} submit-external {element_id} "<results.json>"{w}',
+            "waive": f'{self.command} waive {element_id} --reason "<почему пропускаем>"{w}',
         })
 
     def next_action(self) -> Action:

@@ -5,3 +5,7 @@ __pycache__/
 .pytest_cache/
 build/
 dist/
+
+# скиллы генерирует `reqpipe install-skills` — в них путь к установке конкретной машины
+.claude/skills/
+.opencode/skills/

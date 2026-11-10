@@ -33,6 +33,27 @@ STATUS_RU = {"done": "готово", "pending": "ждёт", "in_progress": "в �
 
 # ------------------------------------------------------------------------------------------- утилиты
 
+def reqpipe_command(absolute: bool = False) -> str:
+    """Как вызвать именно эту установку reqpipe из другой оболочки (например, из агента).
+
+    Если в PATH есть ``reqpipe`` из того же окружения — просто ``reqpipe``; иначе (пакет в отдельном
+    виртуальном окружении, которое не активировано) — полный путь к python этого окружения.
+    """
+    python = Path(sys.executable)
+    found = shutil.which("reqpipe")
+    if not absolute and found and Path(found).resolve().parent == python.resolve().parent:
+        return "reqpipe"
+    return f'"{python.as_posix()}" -m reqpipe'
+
+
+def skill_dirs(global_: bool, dest: Path) -> dict[str, Path]:
+    """Куда класть скиллы: в проект или в профиль пользователя (видны в любой папке)."""
+    if global_:
+        home = Path.home()
+        return {"claude": home / ".claude" / "skills", "opencode": home / ".config" / "opencode" / "skills"}
+    return {"claude": dest / ".claude" / "skills", "opencode": dest / ".opencode" / "skills"}
+
+
 def _ws(args) -> Workspace:
     return Workspace(args.workspace or os.environ.get("REQPIPE_WORKSPACE") or DEFAULT_WS)
 
@@ -43,6 +64,7 @@ def _engine(args, require: bool = True) -> Engine:
         raise ReqpipeError(f"Рабочая область не найдена: {ws.root}. Создайте её: reqpipe init --idea idea.md")
     engine = Engine(build_registry(), ws)
     engine.factory = lambda name: make_executor(name, engine.config)
+    engine.command = reqpipe_command()
     return engine
 
 
@@ -295,29 +317,37 @@ def cmd_check_reference(args) -> int:
 
 
 def cmd_install_skills(args) -> int:
-    dest = Path(args.dest).resolve()
+    targets = skill_dirs(args.global_, Path(args.dest).resolve())
+    command = reqpipe_command(absolute=True)
     root = resources.files("reqpipe") / "skills"
-    targets = {"claude": dest / ".claude" / "skills", "opencode": dest / ".opencode" / "skills"}
     for agent in args.agents.split(","):
         agent = agent.strip()
         if agent not in targets:
             raise ReqpipeError(f"Неизвестный агент {agent!r}: допустимо claude, opencode")
-        source = root / agent
-        for skill in source.iterdir():
+        for skill in sorted((root / agent).iterdir(), key=lambda p: p.name):
             if not skill.is_dir():
                 continue
             target = targets[agent] / skill.name
             target.mkdir(parents=True, exist_ok=True)
-            (target / "SKILL.md").write_text((skill / "SKILL.md").read_text(encoding="utf-8"), encoding="utf-8")
+            text = (skill / "SKILL.md").read_text(encoding="utf-8").replace("{{REQPIPE}}", command)
+            (target / "SKILL.md").write_text(text, encoding="utf-8")
             print(f"✓ {agent}: {target / 'SKILL.md'}")
+    print(f"  в скиллы записан вызов этой установки: {command}")
+    print("  перезапустите агента, если он уже открыт")
     return 0
 
 
 def cmd_doctor(args) -> int:
-    print(f"reqpipe {__version__} · Python {sys.version.split()[0]}")
+    print(f"reqpipe {__version__} · Python {sys.version.split()[0]} · {Path(sys.executable).parent}")
+    print(f"  вызов этой установки: {reqpipe_command()}")
     for name in ("claude", "opencode"):
         path = shutil.which(name)
-        print(f"  {'✓' if path else '✗'} {name}: {path or 'не найден'}")
+        print(f"  {'✓' if path else '✗'} агент {name}: {path or 'не найден в PATH'}")
+    for scope, dirs in (("глобально", skill_dirs(True, Path.cwd())), ("в этой папке", skill_dirs(False, Path.cwd()))):
+        for agent, folder in dirs.items():
+            ok = (folder / "reqpipe-pipeline" / "SKILL.md").exists()
+            if ok or scope == "глобально":
+                print(f"  {'✓' if ok else '·'} скиллы для {agent} {scope}: {folder}" + ("" if ok else " — не установлены"))
     ws = _ws(args)
     print(f"  {'✓' if ws.exists() else '·'} рабочая область {ws.root}" + ("" if ws.exists() else " — не создана"))
     from reqpipe.reference import check, find_reference
@@ -408,7 +438,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.set_defaults(func=cmd_check_reference)
 
     s = sub.add_parser("install-skills", parents=[common], help="установить скиллы для Claude Code и OpenCode")
-    s.add_argument("--dest", default=".", help="корень проекта")
+    s.add_argument("--global", dest="global_", action="store_true",
+                   help="в профиль пользователя (~/.claude/skills, ~/.config/opencode/skills) — видны в любой папке")
+    s.add_argument("--dest", default=".", help="папка проекта (если не --global)")
     s.add_argument("--agents", default="claude,opencode")
     s.set_defaults(func=cmd_install_skills)
 
