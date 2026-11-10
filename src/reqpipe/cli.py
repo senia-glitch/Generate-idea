@@ -134,7 +134,8 @@ def cmd_init(args) -> int:
     print(f"✓ Рабочая область: {ws.root}")
     print(f"  исполнитель: {config.executor} · автономный режим: {'да' if config.autonomous else 'нет'}")
     print(f"  настройки: {ws.path(Workspace.CONFIG)}")
-    print("  дальше: reqpipe next   (агент ведёт конвейер)  или  reqpipe run --executor claude-code|opencode|mock")
+    cmd = reqpipe_command()
+    print(f"  дальше: {cmd} next   (агент ведёт конвейер)  или  {cmd} run --executor claude-code|opencode|mock")
     return 0
 
 
