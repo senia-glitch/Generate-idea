@@ -1,0 +1,2 @@
+# Эталонная схема хранится байт в байт: её SHA-256 зафиксирован в src/reqpipe/reference.py
+requirements-pipeline.html -text

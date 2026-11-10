@@ -1,0 +1,2023 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Конвейер требований с ИИ</title>
+<meta name="description" content="Интерактивная схема: как ИИ-агенты и скиллы превращают сырую идею в формализованный, согласованный и полный набор функциональных требований для системы, превосходящей конкурентов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6f9; --grid:#cfd6e0; --surface:#ffffff; --surface-2:#f2f4f8;
+  --border:#e1e6ed; --border-strong:#cbd3de;
+  --text:#0f172a; --text-2:#4a5568; --text-3:#8792a6;
+  --edge:#b4bfcd; --loop:#334155;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.05),0 2px 10px rgba(15,23,42,.05);
+  --shadow-md:0 2px 4px rgba(15,23,42,.05),0 10px 28px rgba(15,23,42,.10);
+  --shadow-lg:0 4px 12px rgba(15,23,42,.08),0 22px 50px rgba(15,23,42,.16);
+  --p0:#64748b; --p1:#7c3aed; --p2:#2563eb; --p3:#0d9488; --p4:#d97706;
+  --p5:#e11d48; --p6:#16a34a; --p7:#4f46e5; --px:#475569;
+  --t5:#c026d3; --t4:#7c3aed; --t3:#2563eb; --t2:#0d9488; --t1:#64748b;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1016; --grid:#232b37; --surface:#151a22; --surface-2:#1c222c;
+    --border:#29313d; --border-strong:#3a4452;
+    --text:#e7ebf1; --text-2:#a3adbc; --text-3:#6c7787;
+    --edge:#465163; --loop:#cbd5e1;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 2px 10px rgba(0,0,0,.25);
+    --shadow-md:0 2px 4px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+    --shadow-lg:0 4px 12px rgba(0,0,0,.35),0 22px 50px rgba(0,0,0,.5);
+    --p0:#94a3b8; --p1:#a78bfa; --p2:#60a5fa; --p3:#2dd4bf; --p4:#fbbf24;
+    --p5:#fb7185; --p6:#4ade80; --p7:#818cf8; --px:#94a3b8;
+    --t5:#e879f9; --t4:#a78bfa; --t3:#60a5fa; --t2:#2dd4bf; --t1:#94a3b8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1016; --grid:#232b37; --surface:#151a22; --surface-2:#1c222c;
+  --border:#29313d; --border-strong:#3a4452;
+  --text:#e7ebf1; --text-2:#a3adbc; --text-3:#6c7787;
+  --edge:#465163; --loop:#cbd5e1;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 2px 10px rgba(0,0,0,.25);
+  --shadow-md:0 2px 4px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.35),0 22px 50px rgba(0,0,0,.5);
+  --p0:#94a3b8; --p1:#a78bfa; --p2:#60a5fa; --p3:#2dd4bf; --p4:#fbbf24;
+  --p5:#fb7185; --p6:#4ade80; --p7:#818cf8; --px:#94a3b8;
+  --t5:#e879f9; --t4:#a78bfa; --t3:#60a5fa; --t2:#2dd4bf; --t1:#94a3b8;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:Inter,"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:var(--bg); color:var(--text);
+  display:flex; flex-direction:column; height:100vh; height:100dvh; overflow:hidden;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+button{font:inherit;color:inherit}
+
+/* ---------- Header ---------- */
+.top{
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding:14px 20px 12px; background:var(--surface); border-bottom:1px solid var(--border);
+  position:relative; z-index:5; flex:none;
+}
+.brand{display:flex; align-items:center; gap:13px; min-width:0}
+.logo{
+  width:38px; height:38px; border-radius:11px; flex:none; display:grid; place-items:center; color:#fff;
+  background:linear-gradient(135deg,var(--p1),var(--p2) 40%,var(--p3) 70%,var(--p6));
+  box-shadow:0 4px 14px color-mix(in srgb,var(--p2) 35%,transparent);
+}
+.logo svg{width:21px;height:21px}
+.brand h1{font-size:17px; line-height:1.25; margin:0; font-weight:700; letter-spacing:-.012em}
+.brand p{margin:3px 0 0; font-size:12.5px; color:var(--text-2); line-height:1.4; max-width:780px}
+.stats{display:flex; gap:6px; justify-content:flex-end; flex:none}
+.stat{font-size:12px; color:var(--text-2); background:var(--surface-2); border:1px solid var(--border); padding:5px 10px; border-radius:999px; white-space:nowrap}
+.stat b{color:var(--text); font-weight:600; font-variant-numeric:tabular-nums}
+
+.phasebar{
+  display:flex; gap:6px; padding:8px 20px; background:var(--surface); border-bottom:1px solid var(--border);
+  overflow-x:auto; scrollbar-width:none; flex:none; position:relative; z-index:4;
+}
+.phasebar::-webkit-scrollbar{display:none}
+.pchip{
+  display:inline-flex; align-items:center; gap:7px; padding:6px 12px 6px 10px; border-radius:999px; flex:none;
+  border:1px solid var(--border); background:var(--surface); font-size:12.5px; font-weight:500; color:var(--text-2);
+  cursor:pointer; white-space:nowrap; transition:border-color .15s,color .15s,background .15s;
+}
+.pchip i{width:8px; height:8px; border-radius:50%; background:var(--c); flex:none}
+.pchip .pn{color:var(--text-3); font-variant-numeric:tabular-nums; font-weight:600}
+.pchip:hover{border-color:color-mix(in srgb,var(--c) 55%,var(--border)); color:var(--text); background:color-mix(in srgb,var(--c) 6%,var(--surface))}
+.pchip:focus-visible{outline:2px solid var(--c); outline-offset:2px}
+
+/* ---------- Stage / world ---------- */
+.stage{
+  position:relative; flex:1; min-height:0; overflow:hidden; touch-action:none; cursor:grab;
+  background-color:var(--bg);
+  background-image:radial-gradient(circle,var(--grid) 1.1px,transparent 1.4px);
+  outline:none;
+}
+.stage.panning{cursor:grabbing}
+.world{position:absolute; left:0; top:0; transform-origin:0 0}
+.edges{position:absolute; left:0; top:0; width:1px; height:1px; overflow:visible; pointer-events:none}
+
+/* lanes */
+.lane{
+  --c:var(--pc);
+  position:absolute; left:0; top:0; border-radius:20px;
+  background:color-mix(in srgb,var(--c) 5%,transparent);
+  border:1px dashed color-mix(in srgb,var(--c) 32%,transparent);
+  transition:background .35s,box-shadow .35s;
+}
+.lane.flash{background:color-mix(in srgb,var(--c) 12%,transparent); box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 50%,transparent)}
+.lane-head{position:absolute; left:18px; right:14px; top:16px}
+.lane-eyebrow{font-size:11.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--c)}
+.lane-name{font-size:18px; font-weight:700; color:var(--text); margin-top:4px; line-height:1.2; letter-spacing:-.012em}
+.lane-note{font-size:12.5px; color:var(--text-2); margin-top:5px; line-height:1.35}
+
+/* edges */
+.edge-line{fill:none; stroke:var(--edge); stroke-width:1.7; transition:stroke .15s,stroke-width .15s,opacity .2s}
+.edge-arrow{fill:var(--edge); transition:fill .15s,opacity .2s}
+.edge.hover .edge-line,.edge.active .edge-line{stroke:var(--c); stroke-width:2.4}
+.edge.hover .edge-arrow,.edge.active .edge-arrow{fill:var(--c)}
+.edge.active .edge-line{stroke-dasharray:8 5; animation:flow .9s linear infinite}
+.flow-all .edge:not(.loop) .edge-line{stroke:color-mix(in srgb,var(--c) 60%,var(--edge)); stroke-dasharray:8 5; animation:flow 1.3s linear infinite}
+.flow-all .edge:not(.loop) .edge-arrow{fill:color-mix(in srgb,var(--c) 60%,var(--edge))}
+.edge.dim{opacity:.16}
+.edge.loop .edge-line{stroke:var(--loop); stroke-dasharray:5 5; stroke-width:1.6; opacity:.75}
+.edge.loop .edge-arrow{fill:var(--loop); opacity:.75}
+.edge.loop.hover .edge-line,.edge.loop.active .edge-line{opacity:1; stroke-width:2.2; animation:flow 1s linear infinite}
+.edge.loop.hover .edge-arrow,.edge.loop.active .edge-arrow{opacity:1}
+.edge.loop.dim .edge-line,.edge.loop.dim .edge-arrow{opacity:.12}
+.loop-label rect{fill:var(--surface); stroke:color-mix(in srgb,var(--loop) 40%,transparent); stroke-width:1}
+.loop-label text{fill:var(--loop); font:600 11.5px Inter,"Segoe UI",system-ui,sans-serif}
+.edge.loop.dim .loop-label{opacity:.25}
+@keyframes flow{to{stroke-dashoffset:-26}}
+
+/* nodes */
+.node{
+  --c:var(--pc);
+  position:absolute; left:0; top:0; width:252px;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:13px 14px 12px 15px; box-shadow:var(--shadow-sm);
+  cursor:pointer; user-select:none; -webkit-user-select:none;
+  transition:box-shadow .18s,border-color .18s,opacity .22s;
+}
+.node::before{
+  content:""; position:absolute; left:-1px; top:14px; bottom:14px; width:3px; border-radius:0 3px 3px 0; background:var(--c);
+}
+.node:hover{box-shadow:var(--shadow-md); border-color:color-mix(in srgb,var(--c) 45%,var(--border))}
+.node.selected{border-color:var(--c); box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 26%,transparent),var(--shadow-lg)}
+.node.dim{opacity:.36}
+.node.dragging{cursor:grabbing; box-shadow:var(--shadow-lg); z-index:3; transition:none}
+.node:focus-visible{outline:2px solid var(--c); outline-offset:3px}
+
+.node-top{display:flex; align-items:center; gap:7px; margin-bottom:9px; min-height:20px}
+.node-num{
+  font-size:11px; font-weight:700; line-height:1; color:var(--c);
+  background:color-mix(in srgb,var(--c) 13%,transparent); padding:4px 6px; border-radius:6px; font-variant-numeric:tabular-nums;
+}
+.node-kind{display:inline-flex; align-items:center; gap:4px; font-size:11.5px; color:var(--text-2); font-weight:500}
+.node-kind svg{width:13px; height:13px}
+.node-flags{margin-left:auto; display:inline-flex; gap:4px; align-items:center}
+.node-auto{
+  display:inline-flex; align-items:center; gap:3px; font-size:10.5px; font-weight:700; line-height:1; color:var(--t5);
+  background:color-mix(in srgb,var(--t5) 13%,transparent); padding:3px 6px; border-radius:6px;
+}
+.node-auto svg{width:12px; height:12px}
+.node-gate{
+  font-size:10.5px; font-weight:700; letter-spacing:.04em; line-height:1; color:var(--c);
+  border:1px solid color-mix(in srgb,var(--c) 50%,transparent); padding:3px 6px; border-radius:6px;
+}
+.node-title{font-size:15px; font-weight:650; font-weight:600; line-height:1.28; margin:0; color:var(--text); letter-spacing:-.008em}
+.node-actor{font-size:12px; color:var(--c); font-weight:600; margin-top:4px; line-height:1.3}
+.node-desc{font-size:12.5px; line-height:1.48; color:var(--text-2); margin:8px 0 10px}
+.node-outs{display:flex; flex-wrap:wrap; gap:4px; border-top:1px dashed var(--border); padding-top:9px}
+.out{
+  font-size:11px; line-height:1.25; padding:4px 7px; border-radius:6px;
+  background:var(--surface-2); color:var(--text); border:1px solid var(--border);
+}
+.port{position:absolute; width:10px; height:10px; border-radius:50%; background:var(--surface); border:2px solid var(--c); display:none; pointer-events:none}
+.port-l{left:-6px; top:calc(50% - 5px)} .port-r{right:-6px; top:calc(50% - 5px)}
+.port-t{top:-6px; left:calc(50% - 5px)} .port-b{bottom:-6px; left:calc(50% - 5px)}
+.node.has-l .port-l,.node.has-r .port-r,.node.has-t .port-t,.node.has-b .port-b{display:block}
+
+/* LLM-модели на карточках */
+.node-models{display:flex; flex-wrap:wrap; gap:4px; margin-top:8px}
+.mchip{
+  display:inline-flex; align-items:center; gap:5px; font-size:11px; line-height:1; padding:4px 7px 4px 6px; border-radius:7px;
+  background:color-mix(in srgb,var(--t) 10%,var(--surface)); border:1px solid color-mix(in srgb,var(--t) 40%,transparent);
+  color:var(--text); white-space:nowrap; max-width:100%; overflow:hidden;
+}
+.mchip b{font-weight:600}
+.mchip .mrole{color:var(--text-2); min-width:0; overflow:hidden; text-overflow:ellipsis}
+.mchip svg{width:11px; height:11px; color:var(--text-2)}
+.meter{display:inline-flex; gap:1.5px; align-items:flex-end; height:10px; flex:none}
+.meter i{width:3px; border-radius:1px; background:color-mix(in srgb,var(--t) 22%,transparent)}
+.meter i:nth-child(1){height:4px} .meter i:nth-child(2){height:5.5px} .meter i:nth-child(3){height:7px} .meter i:nth-child(4){height:8.5px} .meter i:nth-child(5){height:10px}
+.meter i.on{background:var(--t)}
+.node.mdim{opacity:.22}
+.node.mhit{border-color:var(--mf); box-shadow:0 0 0 3px color-mix(in srgb,var(--mf) 32%,transparent),var(--shadow-md)}
+
+/* режим раскраски по моделям */
+.color-models .node{--c:var(--tc)}
+.color-models .lane{--c:var(--text-3)}
+
+/* input / output special cards */
+.node.kind-input{background:color-mix(in srgb,var(--c) 4%,var(--surface))}
+.node.kind-output{
+  border:2px solid transparent; padding:14px 15px 13px;
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,
+             linear-gradient(140deg,var(--p1),var(--p2),var(--p3),var(--p4),var(--p5),var(--p6)) border-box;
+  box-shadow:var(--shadow-md);
+}
+.node.kind-output::before{display:none}
+.node.kind-output .node-title{font-size:16.5px}
+.node.kind-output.selected{box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 22%,transparent),var(--shadow-lg)}
+.node-badges{display:grid; grid-template-columns:1fr 1fr; gap:5px 8px; margin:0 0 11px}
+.badge{font-size:11.5px; font-weight:600; color:var(--text); display:flex; gap:5px; align-items:center}
+.badge::before{
+  content:""; width:14px; height:14px; border-radius:50%; flex:none;
+  background:color-mix(in srgb,var(--p6) 16%,transparent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/10px no-repeat;
+}
+
+/* cross-cutting cards */
+.node.cross{width:380px; display:grid; grid-template-columns:42px 1fr; gap:0 13px; padding:15px 16px 14px 16px}
+.node.cross .x-icon{
+  width:42px; height:42px; border-radius:11px; display:grid; place-items:center; color:var(--c);
+  background:color-mix(in srgb,var(--c) 12%,transparent);
+}
+.node.cross .x-icon svg{width:22px; height:22px}
+.node.cross .node-top{margin-bottom:4px}
+.node.cross .node-desc{margin:7px 0 10px}
+
+/* ---------- Floating UI ---------- */
+.ui{position:absolute; z-index:6}
+.toolbar{
+  top:12px; left:12px; display:flex; align-items:center; gap:2px; padding:4px;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-md);
+}
+.tb{
+  width:34px; height:34px; border:0; background:transparent; border-radius:8px; display:grid; place-items:center;
+  cursor:pointer; color:var(--text-2); transition:background .15s,color .15s;
+}
+.tb:hover{background:var(--surface-2); color:var(--text)}
+.tb:focus-visible,.zoomval:focus-visible,.btn:focus-visible,.p-link:focus-visible{outline:2px solid var(--p2); outline-offset:1px}
+.tb[aria-pressed="true"]{background:color-mix(in srgb,var(--p2) 14%,transparent); color:var(--p2)}
+.tb svg{width:18px; height:18px}
+.zoomval{
+  min-width:54px; height:34px; font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums;
+  border:0; background:transparent; border-radius:8px; cursor:pointer; color:var(--text-2);
+}
+.zoomval:hover{background:var(--surface-2); color:var(--text)}
+.tsep{width:1px; height:20px; background:var(--border); margin:0 4px}
+
+.legend{
+  left:12px; bottom:12px; display:flex; align-items:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-md);
+  font-size:12px; color:var(--text-2);
+}
+.legend-items{display:flex; align-items:center; flex-wrap:wrap; gap:6px 16px; padding:9px 14px}
+.lg-toggle{display:none}
+.lg-item{display:inline-flex; align-items:center; gap:7px; white-space:nowrap}
+.lg-item svg.ic{width:14px; height:14px; color:var(--text)}
+.lg-line{width:34px; height:10px; overflow:visible}
+.lg-line path{fill:none; stroke:var(--edge); stroke-width:1.8}
+.lg-line path.ah{fill:var(--edge); stroke:none}
+.lg-line.loop path{stroke:var(--loop); stroke-dasharray:4 4}
+.lg-line.loop path.ah{fill:var(--loop); stroke:none}
+.lg-sep{width:1px; height:16px; background:var(--border)}
+.lg-gate{font-size:10.5px; font-weight:700; color:var(--p5); border:1px solid color-mix(in srgb,var(--p5) 50%,transparent); padding:2px 5px; border-radius:5px; line-height:1}
+.lg-set{display:contents}
+.color-models .lg-phases{display:none}
+body:not(.color-models) .lg-models{display:none}
+.lg-link{border:0; background:transparent; padding:2px 4px; font-size:12px; font-weight:600; color:var(--p2); cursor:pointer; border-radius:6px}
+.lg-link:hover{text-decoration:underline}
+.seg{display:inline-flex; padding:2px; border-radius:9px; background:var(--surface-2); border:1px solid var(--border); flex:none}
+.seg button{border:0; background:transparent; font-size:12px; font-weight:600; color:var(--text-2); padding:4px 10px; border-radius:7px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--text); box-shadow:var(--shadow-sm)}
+.seg button:focus-visible,.lg-link:focus-visible,.mrow:focus-visible{outline:2px solid var(--p2); outline-offset:1px}
+
+/* ---------- Легенда моделей ---------- */
+.mpanel{
+  left:12px; bottom:64px; width:430px; max-width:calc(100% - 24px); max-height:calc(100% - 136px);
+  display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  box-shadow:var(--shadow-lg); overflow:hidden; cursor:auto;
+  opacity:0; visibility:hidden; transform:translateY(14px);
+  transition:opacity .2s,transform .26s cubic-bezier(.2,.8,.2,1),visibility 0s linear .26s;
+}
+.mpanel.open{opacity:1; visibility:visible; transform:none; transition:opacity .2s,transform .26s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.mp-head{display:flex; align-items:flex-start; gap:8px; padding:15px 10px 2px 18px}
+.mp-head > div{flex:1; min-width:0}
+.mp-eyebrow{font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--text-3)}
+.mp-head h3{margin:3px 0 0; font-size:17px; font-weight:700; letter-spacing:-.012em}
+.mp-body{overflow:auto; padding:4px 18px 18px; overscroll-behavior:contain}
+.mp-intro{font-size:13px; line-height:1.55; color:var(--text-2); margin:6px 0 10px}
+.mp-row{display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--text-2); margin-bottom:4px}
+.tier{margin-top:14px; padding-top:12px; border-top:1px solid var(--border)}
+.tier-head{display:flex; align-items:center; gap:8px}
+.tier-head b{font-size:14px}
+.tier-head .meter{transform:scale(1.25); transform-origin:left bottom; margin-right:4px}
+.tier-n{font-size:11px; font-weight:700; color:var(--t); background:color-mix(in srgb,var(--t) 13%,transparent); padding:3px 6px; border-radius:6px; font-variant-numeric:tabular-nums}
+.tier-desc{font-size:12.5px; color:var(--text-2); margin:5px 0 4px; line-height:1.45}
+.mrow{
+  display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:10px; width:100%; text-align:left;
+  padding:9px 10px 9px 11px; margin-top:6px; border-radius:10px; border:1px solid var(--border); border-left:3px solid var(--t);
+  background:var(--surface); cursor:pointer; color:var(--text); transition:background .15s,border-color .15s,box-shadow .15s;
+}
+.mrow:hover{background:color-mix(in srgb,var(--t) 6%,var(--surface))}
+.mrow[aria-pressed="true"]{border-color:var(--t); background:color-mix(in srgb,var(--t) 10%,var(--surface)); box-shadow:0 0 0 2px color-mix(in srgb,var(--t) 22%,transparent)}
+.mrow b{font-size:13px; font-weight:600; display:block}
+.mrow-v{font-size:11.5px; color:var(--text-3); display:block; margin-top:2px}
+.mrow-note{font-size:12px; color:var(--text-2); display:block; margin-top:5px; line-height:1.42}
+.mrow-spec{display:flex; gap:4px; color:var(--text-2)}
+.mrow-spec svg{width:15px; height:15px}
+.mrow-use{font-size:11px; font-weight:700; color:var(--t); min-width:24px; text-align:center; font-variant-numeric:tabular-nums; background:color-mix(in srgb,var(--t) 12%,transparent); border-radius:6px; padding:3px 5px}
+.spec-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; margin-top:8px}
+.spec{display:flex; gap:7px; align-items:center; font-size:12.5px; color:var(--text-2); line-height:1.3}
+.spec svg{width:15px; height:15px; color:var(--text); flex:none}
+.mp-foot{font-size:12px; color:var(--text-2); line-height:1.5; margin-top:16px; padding:10px 12px; border-radius:10px; background:var(--surface-2)}
+
+/* ---------- Автономный режим ---------- */
+.modepill{
+  top:12px; right:12px; display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px;
+  background:color-mix(in srgb,var(--t5) 13%,var(--surface)); border:1px solid color-mix(in srgb,var(--t5) 45%,transparent);
+  color:var(--text); font-size:12.5px; font-weight:600; box-shadow:var(--shadow-md); white-space:nowrap; pointer-events:none;
+}
+.modepill svg{width:16px; height:16px; color:var(--t5)}
+.modepill[hidden]{display:none}
+
+/* ---------- Калькулятор стоимости ---------- */
+.costpill{
+  height:34px; display:inline-flex; align-items:center; gap:6px; padding:0 10px; margin-left:2px; border:0; border-radius:8px;
+  background:color-mix(in srgb,var(--p6) 12%,transparent); color:var(--text); font-size:12.5px; font-weight:600;
+  cursor:pointer; font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.costpill svg{width:17px; height:17px; color:var(--p6); flex:none}
+.costpill:hover{background:color-mix(in srgb,var(--p6) 20%,transparent)}
+.costpill[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--p6)}
+.costpill:focus-visible{outline:2px solid var(--p2); outline-offset:1px}
+.calc-big{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0}
+.cb{padding:12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--border)}
+.cb-label{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3)}
+.cb-val{font-size:24px; font-weight:700; letter-spacing:-.02em; margin-top:4px; font-variant-numeric:tabular-nums}
+.cb-sub{font-size:12px; color:var(--text-2); margin-top:2px}
+.calc-people{font-size:12.5px; line-height:1.5; color:var(--text-2); padding:10px 12px; border-radius:10px; border:1px dashed var(--border-strong)}
+.calc-people b{color:var(--text)}
+.calc-h{font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--text-3); margin:18px 0 6px; font-weight:700}
+.calc-row{display:grid; grid-template-columns:1fr auto; gap:2px 10px; align-items:center; margin-top:10px}
+.calc-row label{font-size:13px; color:var(--text)}
+.calc-row output{font-size:13px; font-weight:600; font-variant-numeric:tabular-nums}
+.calc-row input[type=range]{grid-column:1/-1; width:100%; accent-color:var(--p2); margin:2px 0 0}
+.calc-check{display:flex; gap:8px; align-items:flex-start; font-size:13px; margin-top:12px; line-height:1.4; cursor:pointer}
+.calc-check input{accent-color:var(--p2); margin-top:2px}
+.calc-bar{display:flex; height:10px; border-radius:6px; overflow:hidden; gap:2px; margin:6px 0 8px; background:var(--surface-2)}
+.calc-bar i{display:block; background:var(--t); min-width:2px}
+.calc-list{display:flex; flex-direction:column; gap:6px}
+.calc-li{display:grid; grid-template-columns:auto 1fr auto auto; gap:8px; align-items:center; font-size:12.5px; color:var(--text)}
+.calc-li .n{color:var(--text-3); font-weight:700; font-size:11px; min-width:22px; font-variant-numeric:tabular-nums}
+.calc-li .v{font-weight:600; font-variant-numeric:tabular-nums}
+.calc-li .pct{color:var(--text-3); font-variant-numeric:tabular-nums; min-width:34px; text-align:right}
+.calc-prices summary{cursor:pointer; font-size:13px; font-weight:600; margin-top:16px}
+.price-grid{display:grid; grid-template-columns:1fr 68px 68px; gap:6px 8px; align-items:center; margin-top:8px; font-size:12.5px}
+.price-grid input{width:100%; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--surface); color:var(--text); font:inherit; font-variant-numeric:tabular-nums}
+.price-grid .ph{font-size:10.5px; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:.06em}
+
+.hint{
+  top:66px; left:50%; transform:translateX(-50%);
+  background:var(--text); color:var(--bg); font-size:12.5px; padding:8px 15px; border-radius:999px;
+  box-shadow:var(--shadow-md); pointer-events:none; transition:opacity .5s; white-space:nowrap;
+}
+.hint.hide{opacity:0}
+
+/* ---------- Detail panel ---------- */
+.panel{
+  top:12px; right:12px; bottom:12px; width:410px; max-width:calc(100% - 24px);
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-lg);
+  display:flex; flex-direction:column; overflow:hidden; visibility:hidden;
+  transform:translateX(calc(100% + 30px)); transition:transform .34s cubic-bezier(.2,.8,.2,1),visibility 0s linear .34s;
+  cursor:auto;
+}
+.panel.open{transform:none; visibility:visible; transition:transform .34s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.panel-head{display:flex; align-items:center; gap:8px; padding:14px 12px 0 20px}
+.panel-meta{display:flex; flex-wrap:wrap; gap:6px; flex:1; min-width:0}
+.panel-body{flex:1; overflow:auto; padding:6px 20px 22px; overscroll-behavior:contain}
+.panel-foot{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 12px; border-top:1px solid var(--border)}
+.tour-pos{font-size:12px; color:var(--text-3); font-variant-numeric:tabular-nums}
+.btn{
+  height:34px; padding:0 12px; border-radius:9px; border:1px solid var(--border); background:var(--surface);
+  font-size:13px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:4px; color:var(--text);
+}
+.btn:hover{background:var(--surface-2); border-color:var(--border-strong)}
+.btn svg{width:16px; height:16px}
+.btn:disabled{opacity:.4; cursor:default}
+
+.chip{
+  display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px;
+  background:color-mix(in srgb,var(--c) 13%,transparent); color:var(--c); line-height:1.3;
+}
+.chip svg{width:14px; height:14px}
+.chip.neutral{background:var(--surface-2); color:var(--text-2); font-weight:500}
+.chip.gate{background:transparent; border:1px solid color-mix(in srgb,var(--c) 50%,transparent)}
+.p-title{font-size:21px; line-height:1.26; font-weight:700; letter-spacing:-.016em; margin:14px 0 5px}
+.p-title .p-n{color:var(--c); margin-right:8px; font-variant-numeric:tabular-nums}
+.p-actor{font-size:13px; color:var(--text-2); font-weight:500}
+.p-purpose{font-size:14px; line-height:1.62; margin:14px 0 0; color:var(--text)}
+.p-example{margin:12px 0 0; padding:10px 13px; border-radius:10px; background:var(--surface-2); font-size:13.5px; color:var(--text-2); font-style:italic; line-height:1.5}
+.p-sec{margin-top:22px}
+.p-sec h4{font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--text-3); margin:0 0 9px; font-weight:700}
+.p-list{margin:0; padding:0; list-style:none}
+.p-list li{position:relative; padding-left:18px; font-size:13.5px; line-height:1.52; margin:7px 0; color:var(--text)}
+.p-list li::before{content:""; position:absolute; left:3px; top:.62em; width:6px; height:6px; border-radius:2px; background:var(--c)}
+.p-prompt{
+  margin:0; font-family:"Cascadia Mono",ui-monospace,Consolas,"SF Mono",monospace; font-size:12.5px; line-height:1.6;
+  padding:12px 14px; border-radius:10px; border-left:3px solid var(--c);
+  background:color-mix(in srgb,var(--c) 7%,var(--surface)); color:var(--text); white-space:pre-wrap;
+}
+.p-outs{display:flex; flex-wrap:wrap; gap:6px}
+.p-outs .out{font-size:12.5px; padding:5px 9px}
+.p-box{font-size:13.5px; line-height:1.55; padding:11px 13px; border-radius:10px; border:1px solid var(--border); color:var(--text)}
+.p-box.human{border-color:color-mix(in srgb,var(--p6) 40%,var(--border)); background:color-mix(in srgb,var(--p6) 6%,var(--surface))}
+.p-box.auto{border-color:color-mix(in srgb,var(--t5) 40%,var(--border)); background:color-mix(in srgb,var(--t5) 6%,var(--surface))}
+.p-links{display:flex; flex-direction:column; gap:6px}
+.p-link{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:8px 11px; border-radius:10px;
+  border:1px solid var(--border); background:var(--surface); cursor:pointer; font-size:13px; color:var(--text);
+  transition:border-color .15s,background .15s;
+}
+.p-link:hover{border-color:var(--c); background:color-mix(in srgb,var(--c) 6%,var(--surface))}
+.p-link .ln{font-size:11px; font-weight:700; color:var(--c); min-width:24px; font-variant-numeric:tabular-nums}
+.p-link .lt{flex:1; display:flex; flex-direction:column; gap:2px}
+.p-link .ll{font-size:11.5px; color:var(--text-2)}
+.p-link .la{color:var(--text-3); display:grid}
+.p-link .la svg{width:16px; height:16px}
+.p-models{display:flex; flex-direction:column; gap:6px}
+.p-model{display:flex; align-items:center; gap:11px; padding:9px 11px; border-radius:10px; border:1px solid var(--border); border-left:3px solid var(--t); background:color-mix(in srgb,var(--t) 5%,var(--surface))}
+.p-model .meter{transform:scale(1.3); transform-origin:center; margin:0 3px}
+.p-model > div{flex:1; min-width:0}
+.p-model b{font-size:13.5px; font-weight:600}
+.p-model .pm-role{font-size:12.5px; color:var(--text-2)}
+.pm-sub{font-size:11.5px; color:var(--text-3); margin-top:2px}
+.pm-spec{display:flex; gap:4px; color:var(--text-2)}
+.pm-spec svg{width:15px; height:15px}
+.p-why{font-size:13px; line-height:1.55; color:var(--text-2); margin:9px 0 0}
+.p-why b{color:var(--text); font-weight:600}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1380px){
+  .stat:nth-child(n+4){display:none}
+}
+@media (max-width: 1100px){
+  .stats{display:none}
+}
+@media (max-width: 720px){
+  .top{padding:10px 16px}
+  .brand h1{font-size:15px}
+  .brand p{display:none}
+  .logo{width:32px; height:32px; border-radius:9px}
+  .phasebar{padding:7px 16px}
+  .tb-zoom{display:none}
+  .toolbar{top:8px; left:8px}
+  .legend{left:8px; bottom:8px; flex-direction:column; align-items:flex-start; max-width:calc(100% - 16px)}
+  .lg-toggle{display:inline-flex; align-items:center; gap:6px; border:0; background:transparent; padding:8px 12px; font-size:12.5px; font-weight:600; color:var(--text-2); cursor:pointer}
+  .lg-toggle svg{width:15px; height:15px}
+  .legend-items{display:none; padding:0 12px 10px}
+  .legend.open .legend-items{display:flex}
+  .lg-sep{display:none}
+  .hint{top:auto; bottom:56px; left:16px; right:16px; transform:none; white-space:normal; text-align:center; border-radius:12px}
+  .panel{
+    top:auto; left:8px; right:8px; bottom:8px; width:auto; max-width:none; height:min(66%,600px);
+    transform:translateY(calc(100% + 24px));
+  }
+  .mpanel{left:8px; right:8px; bottom:8px; width:auto; max-width:none; max-height:72%}
+  .costpill span{display:none}
+  .costpill{padding:0 8px}
+  .modepill{top:52px; right:8px}
+}
+@media (prefers-reduced-motion: reduce){
+  .edge-line{animation:none !important}
+  .panel,.node,.lane{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <div class="logo" aria-hidden="true" data-icon="hub"></div>
+    <div>
+      <h1>От сырой идеи к требованиям, превосходящим конкурентов</h1>
+      <p>AI-конвейер: этапы, агенты и скиллы, которые превращают замысел в формализованный, согласованный и полный набор функциональных требований</p>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<nav class="phasebar" id="phasebar" aria-label="Переход к фазе"></nav>
+
+<main class="stage" id="stage" aria-label="Схема процесса: перетаскивайте фон, масштабируйте колесом мыши, нажмите на карточку для подробностей">
+  <div class="world" id="world">
+    <div id="lanes"></div>
+    <svg class="edges" id="edges" aria-hidden="true"></svg>
+    <div id="nodes"></div>
+  </div>
+
+  <div class="toolbar ui" role="toolbar" aria-label="Управление схемой">
+    <button class="tb tb-zoom" id="zoomOut" title="Уменьшить (−)" aria-label="Уменьшить" data-icon="minus"></button>
+    <button class="zoomval tb-zoom" id="zoomVal" title="Масштаб 100%">100%</button>
+    <button class="tb tb-zoom" id="zoomIn" title="Увеличить (+)" aria-label="Увеличить" data-icon="plus"></button>
+    <button class="tb" id="fitBtn" title="Показать всю схему (0)" aria-label="Показать всю схему" data-icon="fit"></button>
+    <span class="tsep"></span>
+    <button class="tb" id="tourBtn" title="Пройти по шагам (→)" aria-label="Пройти по шагам" data-icon="play"></button>
+    <button class="tb" id="flowBtn" title="Анимация потока" aria-label="Анимация потока" aria-pressed="false" data-icon="flow"></button>
+    <button class="tb" id="modelsBtn" title="LLM-модели агентов (M)" aria-label="LLM-модели агентов" aria-pressed="false" data-icon="cpu"></button>
+    <button class="tb" id="autoBtn" title="Автономный режим: решения без участия человека (A)" aria-label="Автономный режим" aria-pressed="false" data-icon="robot"></button>
+    <button class="costpill" id="costBtn" title="Оценка стоимости и времени прогона (C)" aria-label="Оценка стоимости и времени прогона" aria-pressed="false" data-icon="calc"><span id="costLbl">≈ $—</span></button>
+    <button class="tb" id="resetBtn" title="Сбросить расположение карточек" aria-label="Сбросить расположение карточек" data-icon="reset"></button>
+    <button class="tb" id="themeBtn" title="Сменить тему" aria-label="Сменить тему" data-icon="moon"></button>
+  </div>
+
+  <div class="legend ui" id="legend">
+    <button class="lg-toggle" id="lgToggle" aria-expanded="false"><span data-icon="info"></span>Легенда</button>
+    <div class="legend-items">
+      <span class="lg-item">Цвет:<span class="seg" role="group" aria-label="Раскраска карточек"><button data-mode="phases" aria-pressed="true">Фазы</button><button data-mode="models" aria-pressed="false">Модели</button></span></span>
+      <span class="lg-sep"></span>
+      <span class="lg-set lg-phases">
+        <span class="lg-item"><svg class="lg-line" viewBox="0 0 34 10"><path d="M1 5H26"/><path class="ah" d="M33 5 25 1v8z"/></svg>Основной поток</span>
+        <span class="lg-item"><svg class="lg-line loop" viewBox="0 0 34 10"><path d="M1 5H26"/><path class="ah" d="M33 5 25 1v8z"/></svg>Возврат на доработку</span>
+        <span class="lg-sep"></span>
+        <span class="lg-item" data-kind="agent"></span>
+        <span class="lg-item" data-kind="skill"></span>
+        <span class="lg-item" data-kind="multi"></span>
+        <span class="lg-item" data-kind="human"></span>
+        <span class="lg-sep"></span>
+        <span class="lg-item"><span class="lg-gate">G1</span>Quality gate</span>
+      </span>
+      <span class="lg-set lg-models" id="lgModels"></span>
+      <button class="lg-link" data-open-models>Все модели →</button>
+    </div>
+  </div>
+
+  <div class="hint ui" id="hint">Колесо — масштаб · Тяните фон — перемещение · Карточки можно двигать · Клик — подробности</div>
+
+  <aside class="mpanel ui" id="mpanel" aria-label="LLM-модели агентов" aria-hidden="true">
+    <div class="mp-head">
+      <div><div class="mp-eyebrow">Легенда моделей</div><h3>Какой «мозг» у каждого агента</h3></div>
+      <button class="tb" id="mpClose" title="Закрыть" aria-label="Закрыть" data-icon="close"></button>
+    </div>
+    <div class="mp-body" id="mpBody"></div>
+  </aside>
+
+  <aside class="mpanel ui" id="cpanel" aria-label="Оценка стоимости и времени" aria-hidden="true">
+    <div class="mp-head">
+      <div><div class="mp-eyebrow">Калькулятор прогона</div><h3>Сколько стоит и сколько длится</h3></div>
+      <button class="tb" id="cpClose" title="Закрыть" aria-label="Закрыть" data-icon="close"></button>
+    </div>
+    <div class="mp-body" id="cpBody"></div>
+  </aside>
+
+  <div class="modepill ui" id="modePill" hidden><span data-icon="robot"></span>Автономный режим · решения принимает агент-арбитр</div>
+
+  <aside class="panel ui" id="panel" aria-label="Подробности этапа" aria-hidden="true">
+    <div class="panel-head">
+      <div class="panel-meta" id="panelMeta"></div>
+      <button class="tb" id="panelClose" title="Закрыть (Esc)" aria-label="Закрыть" data-icon="close"></button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+    <div class="panel-foot">
+      <button class="btn" id="prevBtn"><span data-icon="left"></span>Назад</button>
+      <span class="tour-pos" id="tourPos"></span>
+      <button class="btn" id="nextBtn">Далее<span data-icon="right"></span></button>
+    </div>
+  </aside>
+</main>
+
+<script>
+(() => {
+'use strict';
+
+/* =========================================================
+   ИКОНКИ
+   ========================================================= */
+const svgI = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+const ICONS = {
+  spark: svgI('<path d="M12 3.5l1.9 4.9 4.9 1.9-4.9 1.9L12 17.1l-1.9-4.9-4.9-1.9 4.9-1.9z"/><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'),
+  bolt:  svgI('<path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12z"/>'),
+  users: svgI('<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.9a3.2 3.2 0 0 1 0 6.2"/><path d="M18 14.3c1.8.8 3 2.8 3 5.7"/>'),
+  user:  svgI('<circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.9 3.1-7 7-7s7 3.1 7 7"/>'),
+  bulb:  svgI('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.4 1.1 2.2h5c0-.8.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>'),
+  doc:   svgI('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 14.5 2 2 4-4"/>'),
+  db:    svgI('<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>'),
+  hub:   svgI('<circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m6.5 6.5 3.6 3.6M17.5 6.5l-3.6 3.6M6.5 17.5l3.6-3.6M17.5 17.5l-3.6-3.6"/>'),
+  link:  svgI('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'),
+  shield:svgI('<path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z"/><path d="m9 12 2 2 4-4"/>'),
+  minus: svgI('<path d="M5 12h14"/>'),
+  plus:  svgI('<path d="M12 5v14M5 12h14"/>'),
+  fit:   svgI('<path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/>'),
+  play:  svgI('<path d="M7 4.5v15l12-7.5z"/>'),
+  flow:  svgI('<path d="M3 9c3 0 3-3 6-3s3 3 6 3 3-3 6-3"/><path d="M3 17c3 0 3-3 6-3s3 3 6 3 3-3 6-3"/>'),
+  reset: svgI('<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>'),
+  moon:  svgI('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'),
+  sun:   svgI('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+  close: svgI('<path d="M6 6l12 12M18 6 6 18"/>'),
+  left:  svgI('<path d="M15 6l-6 6 6 6"/>'),
+  right: svgI('<path d="M9 6l6 6-6 6"/>'),
+  info:  svgI('<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
+  arrow: svgI('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+  back:  svgI('<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>'),
+  cpu:   svgI('<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>'),
+  brain: svgI('<path d="M12 5a3 3 0 1 0-6 .1 4 4 0 0 0-2.5 5.8 4 4 0 0 0 .6 6.6A4 4 0 1 0 12 18z"/><path d="M12 5a3 3 0 1 1 6 .1 4 4 0 0 1 2.5 5.8 4 4 0 0 1-.6 6.6A4 4 0 1 1 12 18z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>'),
+  code:  svgI('<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>'),
+  search:svgI('<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>'),
+  gauge: svgI('<path d="M4 17a8 8 0 1 1 16 0"/><path d="m12 17 4-5"/>'),
+  lock:  svgI('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+  robot: svgI('<rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M9.5 13h.01M14.5 13h.01M9.5 16h5M3 12v3M21 12v3"/>'),
+  calc:  svgI('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18h.01M12 18h.01M16 18h.01"/>'),
+  layers:svgI('<path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/><path d="m3 17 9 5 9-5"/>'),
+};
+
+/* =========================================================
+   ДАННЫЕ: ФАЗЫ, ТИПЫ, ЭТАПЫ, СВЯЗИ
+   ========================================================= */
+const PHASES = {
+  p0: { eyebrow:'Вход',          name:'Замысел',                       note:'Что угодно и в любом виде',        chip:'Вход' },
+  p1: { eyebrow:'Фаза 1',        name:'Прояснение замысла',            note:'Диалог агента с автором идеи',     chip:'Прояснение' },
+  p2: { eyebrow:'Фаза 2',        name:'Исследование',                  note:'Четыре агента параллельно, затем проверка фактов', chip:'Исследование' },
+  p3: { eyebrow:'Фаза 3',        name:'Синтез и стратегия',            note:'Где и чем мы будем лучше',         chip:'Стратегия' },
+  p4: { eyebrow:'Фаза 4',        name:'Формализация требований',       note:'От историй к строгой спецификации', chip:'Формализация' },
+  p5: { eyebrow:'Фаза 5',        name:'Каскад проверок качества',      note:'Шесть последовательных quality gates', chip:'Проверки' },
+  p6: { eyebrow:'Фаза 6',        name:'Приоритизация и согласование',  note:'Последнее слово — за человеком',   chip:'Согласование' },
+  p7: { eyebrow:'Выход',         name:'Результат',                     note:'Готовая спецификация',             chip:'Результат' },
+  px: { eyebrow:'Сквозной слой', name:'Инфраструктура процесса',       note:'Обслуживает все фазы конвейера',   chip:'Сквозной слой' },
+};
+const PHASE_NUM = { p1:'1', p2:'2', p3:'3', p4:'4', p5:'5', p6:'6' };
+
+const KINDS = {
+  input:  { label:'Вход',           icon:'bulb'  },
+  agent:  { label:'AI-агент',       icon:'spark' },
+  skill:  { label:'Скилл',          icon:'bolt'  },
+  multi:  { label:'Мультиагент',    icon:'users' },
+  human:  { label:'Человек',        icon:'user'  },
+  output: { label:'Результат',      icon:'doc'   },
+  infra:  { label:'Инфраструктура', icon:'db'    },
+};
+
+const NODES = [
+  /* ---------- ВХОД ---------- */
+  { id:'idea', phase:'p0', col:0, num:'0', kind:'input',
+    title:'Сырая идея', actor:'Автор идеи',
+    short:'Замысел в свободной форме: пара фраз, голосовая заметка, скетч, ссылки на аналоги.',
+    outs:['Исходное описание'],
+    purpose:'Точка входа конвейера. Идея может быть сколь угодно сырой — неполной, противоречивой, с размытыми целями и скрытыми допущениями. От автора не требуется навыков бизнес-анализа: всю структуризацию берут на себя агенты.',
+    example:'«Хочу сервис для учёта домашних финансов — но умнее всего, что есть сейчас».',
+    methods:['Приём в любом формате: текст, аудио с транскрибацией, изображения, ссылки','Сохранение исходной версии — с неё начинается цепочка трассировки «идея → требование»'],
+    done:'Идея зарегистрирована в базе знаний и получила идентификатор.' },
+
+  /* ---------- ФАЗА 1 ---------- */
+  { id:'clarify', phase:'p1', col:1, num:'1.1', kind:'agent',
+    title:'Сократическое интервью', actor:'Агент-интервьюер',
+    short:'Задаёт уточняющие вопросы и вскрывает цель, проблему, аудиторию, ограничения и скрытые допущения.',
+    outs:['Бриф идеи','Реестр допущений'],
+    purpose:'Превратить расплывчатый замысел в осмысленный бриф. Агент ведёт диалог с автором, пока не будут закрыты ключевые вопросы, и явно отделяет факты от допущений.',
+    methods:['Вопросы по схеме 5W2H: что, зачем, кто, где, когда, как, сколько','«Пять почему» — поиск корневой проблемы за желаемым решением','Выявление и маркировка скрытых допущений','Адаптивная глубина: агент сам решает, когда информации достаточно'],
+    prompt:'Ты — опытный бизнес-аналитик. Не предлагай решений. Задавай по одному вопросу за раз, пока не поймёшь проблему, аудиторию, контекст и критерии успеха.',
+    done:'Все разделы брифа заполнены; каждое допущение помечено и имеет способ проверки.',
+    hitl:'Автор идеи отвечает на вопросы и подтверждает итоговый бриф.' },
+
+  { id:'frame', phase:'p1', col:1, num:'1.2', kind:'skill',
+    title:'Постановка проблемы', actor:'Скилл Problem Framing',
+    short:'Формулирует проблему, гипотезу ценности, метрики успеха и границы: что входит в scope, а что нет.',
+    outs:['Problem Statement','Lean Canvas','Границы scope'],
+    purpose:'Зафиксировать, что и для кого мы решаем, до начала исследования — чтобы все последующие агенты работали в одних и тех же рамках.',
+    methods:['Шаблон Problem Statement: кто страдает, от чего, в каком контексте и во что это обходится','Lean Canvas как одностраничная модель продукта','Явные списки in-scope и out-of-scope','Измеримые критерии успеха продукта'],
+    prompt:'Сформулируй проблему так, чтобы её можно было опровергнуть данными. Отдели проблему от предлагаемого решения.',
+    done:'Проблема сформулирована измеримо, границы согласованы с автором идеи.' },
+
+  /* ---------- ФАЗА 2 ---------- */
+  { id:'competitors', phase:'p2', col:2, num:'2.1', kind:'agent',
+    title:'Конкурентная разведка', actor:'Агент-исследователь рынка',
+    short:'Находит прямых и косвенных конкурентов, разбирает их функции, тарифы, UX и интеграции.',
+    outs:['Матрица функций','Профили конкурентов'],
+    purpose:'Построить объективную карту того, что уже умеет рынок. Она нужна для двух целей: паритета — не уступить в базовых функциях — и превосходства — найти, где обойти.',
+    methods:['Веб-поиск, разбор сайтов, документации, changelog и демо','Матрица «функция × конкурент» с оценкой глубины реализации','Анализ тарифов и моделей монетизации','Косвенные конкуренты и обходные решения: таблицы, блокноты, ручной труд'],
+    prompt:'Для каждого конкурента опиши функции через пользовательскую ценность, а не маркетинговые слова. Указывай источник каждого факта.',
+    done:'Покрыты лидеры рынка и несколько нишевых игроков; у каждого факта есть ссылка на источник.' },
+
+  { id:'voc', phase:'p2', col:2, num:'2.2', kind:'agent',
+    title:'Голос пользователя', actor:'Агент анализа отзывов (VoC)',
+    short:'Анализирует отзывы и обсуждения, выделяет боли, неудовлетворённые потребности и Jobs-to-be-Done.',
+    outs:['Карта болей','Jobs-to-be-Done'],
+    purpose:'Узнать, чего пользователям не хватает в существующих решениях. Именно здесь лежит главный источник будущего превосходства.',
+    methods:['Сбор отзывов из магазинов приложений, форумов, соцсетей и сайтов-агрегаторов','Тематическая кластеризация и анализ тональности','Формулировка задач в формате JTBD: «Когда… я хочу… чтобы…»','Оценка частоты и остроты каждой боли'],
+    prompt:'Извлекай из отзывов не мнения, а конкретные ситуации, где продукт подвёл пользователя. Группируй по задаче пользователя, а не по функции.',
+    done:'Каждая боль подтверждена несколькими независимыми источниками и имеет оценку частоты и остроты.' },
+
+  { id:'domain', phase:'p2', col:2, num:'2.3', kind:'agent',
+    title:'Анализ предметной области', actor:'Агент-доменный аналитик',
+    short:'Изучает отраслевые источники, строит глоссарий, онтологию сущностей и карту бизнес-процессов.',
+    outs:['Глоссарий','Онтология домена','Карта процессов'],
+    purpose:'Дать всем агентам и людям общий язык и модель предметной области, чтобы требования были корректны с точки зрения отрасли.',
+    methods:['RAG по отраслевой литературе, стандартам и экспертным материалам','Извлечение сущностей, атрибутов и связей','Моделирование процессов в нотации BPMN','Единый язык (ubiquitous language) в духе DDD'],
+    prompt:'Каждый термин определи однозначно и приведи пример. Отметь термины, которые в отрасли трактуются по-разному.',
+    done:'Глоссарий покрывает все термины брифа; ключевые процессы смоделированы и проверены экспертом.' },
+
+  { id:'compliance', phase:'p2', col:2, num:'2.4', kind:'agent',
+    title:'Регуляторика и ограничения', actor:'Агент-комплаенс',
+    short:'Выявляет законы, стандарты и обязательные требования к данным, безопасности и доступности.',
+    outs:['Реестр обязательных требований'],
+    purpose:'Сразу определить требования, которые нельзя нарушить ни при каком приоритете, — чтобы система была юридически допустимой на целевых рынках.',
+    methods:['Поиск применимых норм: персональные данные (152-ФЗ, GDPR), платежи, отраслевые регламенты','Стандарты доступности (WCAG) и информационной безопасности','Перевод норм права в проверяемые обязательства системы'],
+    prompt:'Для каждой нормы укажи источник, юрисдикцию и что конкретно система обязана делать или не делать.',
+    done:'Каждое обязательство привязано к источнику права и юрисдикции.' },
+
+  { id:'factcheck', phase:'p2', col:3, num:'2.5', gate:'G0', kind:'agent',
+    title:'Верификация фактов', actor:'Агент-фактчекер',
+    short:'Сверяет каждое утверждение исследования с первоисточником: цитата, дата, степень уверенности.',
+    outs:['Проверенная база фактов','Реестр гипотез'],
+    purpose:'Ошибочный «факт» о конкуренте, отрасли или норме права превращается в ложный дифференциатор или неверное требование — и дальше уже ни одна проверка его не поймает. Этот фильтр пропускает в синтез только подтверждённые данные.',
+    methods:['Проверка каждого утверждения по первоисточнику — с цитатой и ссылкой','Дата актуальности: устаревшие данные помечаются и перепроверяются','Спорные факты подтверждаются вторым независимым источником','Поиск противоречий между выводами разных агентов фазы 2'],
+    prompt:'Для каждого утверждения найди первоисточник и процитируй его. Нет подтверждения — помечай утверждение как гипотезу, а не факт.',
+    done:'Все ключевые утверждения подтверждены первоисточниками или явно помечены как гипотезы; неподтверждённое отправлено на доисследование.',
+    hitl:'Эксперт предметной области выборочно проверяет критичные факты.' },
+
+  /* ---------- ФАЗА 3 ---------- */
+  { id:'gap', phase:'p3', col:4, num:'3.1', kind:'agent',
+    title:'Gap-анализ и поиск возможностей', actor:'Агент-стратег',
+    short:'Накладывает боли пользователей на возможности конкурентов и находит незакрытые ниши.',
+    outs:['Карта возможностей','ERRC-сетка'],
+    purpose:'Найти точки, где можно стать лучше рынка: незакрытые потребности, плохо реализованные функции, лишняя сложность у конкурентов.',
+    methods:['Наложение карты болей на матрицу функций конкурентов','Сетка ERRC из стратегии «голубого океана»: упразднить, снизить, повысить, создать','Opportunity Score: важность × неудовлетворённость'],
+    prompt:'Ищи не только недостающие функции, но и то, что конкуренты делают избыточно сложно. Каждую возможность обоснуй данными фазы 2.',
+    done:'Каждая возможность связана с болями и конкретными слабостями конкурентов и имеет оценку потенциала.' },
+
+  { id:'vision', phase:'p3', col:4, num:'3.2', kind:'skill',
+    title:'Ценностное предложение', actor:'Скилл Product Vision',
+    short:'Формулирует позиционирование, УТП, North Star-метрику и ключевые дифференциаторы — почему мы лучше.',
+    outs:['Product Vision','Карта дифференциации','Критерии превосходства'],
+    purpose:'Выбрать стратегию превосходства и превратить её в ограниченный набор ключевых дифференциаторов, которые затем станут «вау»-требованиями.',
+    methods:['Value Proposition Canvas','Формула позиционирования: для кого, какую задачу решаем, чем отличаемся','North Star Metric','От трёх до пяти ключевых дифференциаторов','Критерии превосходства фиксируются здесь, до написания требований: в чём именно и насколько система должна быть лучше конкурентов. По ним же выносит вердикт финальный бенчмарк (G6), поэтому планку нельзя сдвинуть задним числом'],
+    prompt:'Сформулируй, почему пользователь конкурента перейдёт к нам. Если ответ звучит как «то же самое, но лучше» — ищи сильнее.',
+    done:'Дифференциаторы измеримы, подтверждены возможностями из 3.1 и одобрены автором идеи; критерии превосходства зафиксированы.',
+    hitl:'Автор идеи утверждает выбранную стратегию дифференциации.' },
+
+  { id:'personas', phase:'p3', col:4, num:'3.3', kind:'agent',
+    title:'Персоны и сценарии', actor:'Агент UX-исследователь',
+    short:'Строит персоны, роли и карты пути пользователя (CJM) с основными и исключительными сценариями.',
+    outs:['Персоны и роли','CJM','Сценарии'],
+    purpose:'Описать, кто и как будет пользоваться системой, чтобы требования выводились из реальных сценариев, а не из списка функций.',
+    methods:['Персоны на основе данных VoC, а не фантазии','Модель ролей и прав доступа','Customer Journey Map с эмоциями и точками боли','Основные, альтернативные и исключительные сценарии'],
+    prompt:'Каждая персона должна опираться на кластеры из анализа отзывов. Для каждого этапа пути укажи боль и возможность.',
+    done:'Каждая роль системы имеет персону и хотя бы один сквозной сценарий.' },
+
+  /* ---------- ФАЗА 4 ---------- */
+  { id:'storymap', phase:'p4', col:5, num:'4.1', kind:'agent',
+    title:'Декомпозиция и Story Map', actor:'Агент-продакт',
+    short:'Раскладывает продукт на эпики, функции и пользовательские истории вдоль пути пользователя.',
+    outs:['Story Map','Эпики и истории'],
+    purpose:'Перейти от стратегии к структуре продукта: каждая история связана с персоной, сценарием и возможностью.',
+    methods:['User Story Mapping','Истории в формате «Как <роль>, я хочу <действие>, чтобы <ценность>»','Иерархия: эпик → функция → история','Отметка историй-дифференциаторов'],
+    prompt:'Не пропусти «скучные» истории: регистрацию, настройки, уведомления, ошибки, администрирование.',
+    done:'Каждый этап CJM покрыт историями; у каждой истории есть источник.' },
+
+  { id:'model', phase:'p4', col:5, num:'4.2', kind:'agent',
+    title:'Модель данных и поведения', actor:'Агент-системный аналитик',
+    short:'Описывает сущности и связи, жизненные циклы объектов и правила бизнес-логики.',
+    outs:['ER-модель','Диаграммы состояний','Бизнес-правила'],
+    purpose:'Дать требованиям строгий каркас: что хранит система, какие состояния проходят объекты и какие правила действуют.',
+    methods:['Концептуальная ER-модель на основе онтологии домена','Конечные автоматы для ключевых объектов','Каталог бизнес-правил и вычислений','Диаграммы вариантов использования (Use Case)'],
+    prompt:'Для каждой сущности перечисли все состояния и допустимые переходы. Каждое правило запиши как проверяемое условие.',
+    done:'Каждая сущность и каждый переход состояния покрыты хотя бы одной историей.' },
+
+  { id:'reqwriter', phase:'p4', col:6, num:'4.3', kind:'agent',
+    title:'Написание требований', actor:'Агент-аналитик требований',
+    short:'Превращает истории в атомарные требования: ID, формулировка по шаблону EARS, обоснование, источник.',
+    outs:['Требования FR-001…FR-N','Машиночитаемый реестр'],
+    purpose:'Создать формальную спецификацию: каждое требование описывает одно проверяемое поведение системы и имеет явное происхождение.',
+    methods:['Шаблоны EARS: «Когда <событие>, система должна <реакция>», «Пока <состояние>…», «Если <нежелательное>, то…»','Атрибуты: ID, приоритет, источник, обоснование, владелец','Учёт обязательств из реестра комплаенса','Ссылки на сущности модели данных','Требования ведутся как структурированные данные по единой схеме (JSON / YAML: ID, тип, источник, связи, статус, версия), а не как свободный текст — так полноту и противоречия можно проверять машинно, а сотни требований не теряются между частями контекста'],
+    prompt:'Одно требование — одно поведение. Запрещены слова «быстро», «удобно», «и т. д.», «при необходимости». Всегда указывай источник требования.',
+    done:'Каждая история и каждое обязательство комплаенса превращены в требования с полным набором атрибутов.' },
+
+  { id:'acceptance', phase:'p4', col:6, num:'4.4', kind:'skill',
+    title:'Критерии приёмки', actor:'Скилл BDD / Gherkin',
+    short:'Для каждого требования пишет сценарии Given / When / Then, включая негативные и граничные.',
+    outs:['Gherkin-сценарии'],
+    purpose:'Сделать каждое требование проверяемым: если для требования нельзя написать критерий приёмки, оно сформулировано плохо.',
+    methods:['Структура Given / When / Then','Позитивные, негативные и граничные сценарии','Таблицы примеров (Scenario Outline)','Готовность к автоматизации тестов'],
+    prompt:'Для каждого требования — минимум один позитивный и один негативный сценарий. Граничные значения бери из бизнес-правил модели.',
+    done:'У каждого функционального требования есть исполнимые критерии приёмки.' },
+
+  { id:'testgen', phase:'p4', col:6, num:'4.5', kind:'agent',
+    title:'Генерация автотестов', actor:'Агент — QA-инженер',
+    short:'Превращает Gherkin-сценарии в исполняемые автотесты (Playwright / Cypress), привязанные к ID требований.',
+    outs:['Набор автотестов','Матрица «требование × тест»'],
+    purpose:'Сделать спецификацию исполняемой: каждый критерий приёмки становится автотестом. Тесты прогоняются на прототипе этапа 5.5, а затем переходят в разработку как готовый регрессионный набор.',
+    methods:['Генерация тестов Playwright / Cypress из Gherkin-сценариев (step definitions)','Слой Page Object с абстрактными локаторами — тесты не привязаны к будущей вёрстке','Тестовые данные из граничных значений бизнес-правил модели','Каждый тест помечен FR-ID — для трассировки и анализа полноты (G3)'],
+    prompt:'Один сценарий Gherkin — один тест. Не изобретай поведение: всё, чего нет в критериях приёмки, — повод вернуть требование на доработку, а не дописать тест.',
+    done:'У каждого критерия приёмки есть исполняемый тест; тесты проходят на прототипе этапа 5.5.' },
+
+  /* ---------- ФАЗА 5 ---------- */
+  { id:'quality', phase:'p5', col:7, num:'5.1', gate:'G1', kind:'skill',
+    title:'Линтер качества требований', actor:'Скилл по ISO/IEC/IEEE 29148',
+    short:'Проверяет атомарность, однозначность и проверяемость каждого требования, ловит размытые слова.',
+    outs:['Оценка качества FR'],
+    purpose:'Первый и самый дешёвый фильтр: отсеять плохо сформулированные требования до того, как ими займутся более дорогие проверки.',
+    methods:['Критерии ISO/IEC/IEEE 29148: необходимость, однозначность, атомарность, проверяемость, осуществимость','Словарь запрещённых слов и конструкций','Сверка терминов с глоссарием','Оценка от 0 до 100 и предложение исправления'],
+    prompt:'Оцени требование по каждому критерию отдельно. Если критерий нарушен — предложи исправленную формулировку.',
+    done:'Все требования набрали пороговую оценку; дефектные возвращены на этап 4.3.' },
+
+  { id:'critic', phase:'p5', col:7, num:'5.2', gate:'G2', kind:'agent',
+    title:'Красная команда', actor:'Агент-критик',
+    short:'Ищет противоречия между требованиями, «серые зоны», сценарии злоупотреблений и невыполнимые обещания.',
+    outs:['Реестр дефектов и рисков'],
+    purpose:'Состязательная проверка: независимый агент целенаправленно пытается «сломать» спецификацию.',
+    methods:['Поиск пар противоречащих требований','Глобальная проверка непротиворечивости всего набора: требования разных эпиков сверяются через общие сущности, состояния и бизнес-правила модели данных','Сценарии злоупотреблений (abuse cases)','Анализ «а что, если…» для сбоев, гонок и потери данных','Отдельная модель или промпт, не участвовавшие в написании требований'],
+    prompt:'Ты — скептичный эксперт, который ищет причины, почему продукт провалится. Найди не меньше десяти проблем и ранжируй их по ущербу.',
+    done:'Все критические дефекты закрыты или осознанно приняты с обоснованием.' },
+
+  { id:'coverage', phase:'p5', col:7, num:'5.3', gate:'G3', kind:'agent',
+    title:'Анализ полноты', actor:'Агент трассировки',
+    short:'Проверяет, что каждая боль, сценарий, сущность и обязательство покрыты требованиями.',
+    outs:['Матрица трассируемости','Отчёт о пробелах'],
+    purpose:'Доказать полноту: ни одна потребность, найденная в исследовании, не потерялась на пути к требованиям.',
+    methods:['Прямая и обратная трассировка: боль → возможность → история → требование → тест','CRUD-матрица «сущность × операция»','Покрытие всех состояний и переходов','Чек-листы типовых функций домена: поиск, экспорт, уведомления, аудит'],
+    prompt:'Найди всё, что ни на что не ссылается и на что никто не ссылается. Каждый пробел оформи как предложение новой истории.',
+    done:'Покрыты все приоритетные боли и все обязательства; «сиротских» требований нет.' },
+
+  { id:'simulation', phase:'p5', col:8, num:'5.4', gate:'G4', kind:'multi',
+    title:'Симуляция пользователей', actor:'Агенты-персоны',
+    short:'Синтетические пользователи «проживают» сценарии по спецификации и сообщают, где застряли.',
+    outs:['Отчёт о симуляции'],
+    purpose:'Проверить спецификацию глазами пользователей до того, как написана хотя бы одна строка кода.',
+    methods:['Отдельный агент на каждую персону — с её целями, навыками и болями','Прогон сценариев CJM только по тексту требований','Фиксация тупиков, лишних шагов и неочевидных мест','Сравнение с опытом в продуктах конкурентов'],
+    prompt:'Ты — <персона>. Пройди сценарий, опираясь только на требования. Если система не говорит, что произойдёт дальше, — это дефект.',
+    done:'Каждая персона проходит все ключевые сценарии без тупиков.' },
+
+  { id:'usertest', phase:'p5', col:8, num:'5.5', gate:'G5', kind:'human',
+    title:'Проверка на реальных пользователях', actor:'Пользователи ЦА + агент-прототипировщик',
+    short:'По требованиям собирается кликабельный прототип; 5–8 реальных пользователей проходят ключевые сценарии.',
+    outs:['Кликабельный прототип','Отчёт юзабилити-теста'],
+    purpose:'Все остальные проверки выполняет ИИ, а агенты-персоны склонны соглашаться и «усреднять» поведение. Подтвердить, что требования описывают продукт, который нужен людям и удобнее конкурентов, могут только реальные пользователи.',
+    methods:['Генерация кликабельного прототипа ключевых сценариев прямо из требований и критериев приёмки','Перед показом людям прототип проходит автотесты из 4.5 — значит, он действительно реализует требования','Юзабилити-тест с 5–8 представителями целевых персон','Те же задачи — в продукте основного конкурента, для прямого сравнения','Каждая найденная проблема привязывается к конкретному требованию (FR-ID) и уходит на доработку'],
+    prompt:'Собери прототип строго по требованиям: не добавляй поведения, которого нет в спецификации. Каждый экран помечай ID требований, которые он реализует.',
+    done:'Реальные пользователи проходят ключевые сценарии без критичных проблем; найденные проблемы превращены в изменения требований.',
+    hitl:'Решающее слово — за реальными пользователями: их замечания важнее выводов синтетических персон.' },
+
+  { id:'benchmark', phase:'p5', col:8, num:'5.6', gate:'G6', kind:'agent',
+    title:'Конкурентный бенчмарк', actor:'Агент-стратег',
+    short:'Сверяет требования с матрицей конкурентов: паритет по базовым функциям и перевес по ключевым.',
+    outs:['Scorecard превосходства'],
+    purpose:'Финальный стратегический фильтр: подтвердить, что спецификация описывает систему лучше конкурентов, а не ещё одну такую же.',
+    methods:['Оценка по критериям превосходства, зафиксированным на этапе 3.2, — без их пересмотра задним числом','Паритет: все базовые функции лидеров рынка покрыты','Превосходство: по каждому дифференциатору есть требования, которых нет у конкурентов','Взвешенная оценка по значимым для пользователя критериям','Проверочный вопрос: «Почему пользователь перейдёт к нам?»'],
+    prompt:'Для каждого конкурента ответь: что есть у него и нет у нас, и что есть у нас и нет у него. Если перевеса нет — так и скажи.',
+    done:'Паритет по базовым функциям — полный, перевес есть по каждому заявленному дифференциатору.' },
+
+  /* ---------- ФАЗА 6 ---------- */
+  { id:'feasibility', phase:'p6', col:9, num:'6.1', kind:'agent',
+    title:'Оценка реализуемости', actor:'Агент-архитектор',
+    short:'Проверяет, что каждое требование технически осуществимо, и даёт грубую оценку трудоёмкости и рисков.',
+    outs:['Оценка трудоёмкости','Реестр технических рисков'],
+    purpose:'Требования должны позволять построить систему: невыполнимое или непомерно дорогое требование обесценивает спецификацию. Кроме того, без оценки трудоёмкости невозможна честная приоритизация.',
+    methods:['Архитектурный эскиз: основные компоненты, интеграции, данные','Проверка осуществимости каждого требования (критерий «feasible» ISO/IEC/IEEE 29148)','Грубая оценка трудоёмкости в относительных единицах (T-shirt sizing)','Технические прототипы (spike) для требований с высокой неопределённостью'],
+    prompt:'Для каждого требования ответь: реализуемо ли оно известными средствами, во что обойдётся и в чём главный технический риск. Невыполнимое помечай и предлагай реализуемую альтернативу.',
+    done:'У каждого требования есть признак осуществимости и оценка трудоёмкости; невыполнимые заменены или исключены с обоснованием.',
+    hitl:'Ведущий разработчик подтверждает оценки и риски.' },
+
+  { id:'prioritize', phase:'p6', col:9, num:'6.2', kind:'skill',
+    title:'Приоритизация', actor:'Скилл Kano + RICE',
+    short:'Делит функции на базовые, ожидаемые и «вау», оценивает ценность и трудоёмкость, формирует MVP.',
+    outs:['Приоритизированный бэклог','Состав MVP'],
+    purpose:'Определить порядок реализации так, чтобы уже первый релиз давал паритет по базе и хотя бы один ощутимый дифференциатор.',
+    methods:['Модель Кано: обязательные, одномерные и привлекательные функции','RICE: охват × влияние × уверенность / трудозатраты (трудозатраты — из оценки реализуемости 6.1)','MoSCoW для границ MVP','Учёт зависимостей между требованиями'],
+    prompt:'MVP должен закрывать все обязательные функции и хотя бы один дифференциатор. Обоснуй каждое решение «Won’t have».',
+    done:'Каждое требование имеет приоритет и целевой релиз; состав MVP обоснован.' },
+
+  { id:'debate', phase:'p6', col:9, num:'6.3', kind:'multi',
+    title:'Дебаты стейкхолдеров', actor:'Мультиагентный совет ролей',
+    short:'Агенты-роли — бизнес, пользователь, архитектор, безопасность, юрист — спорят и ищут компромисс.',
+    outs:['Протокол компромиссов','Журнал решений'],
+    purpose:'Заранее разыграть конфликты интересов, которые иначе всплывут на поздних стадиях, и прийти к согласованной позиции.',
+    methods:['Структурированные дебаты под управлением агента-модератора','Каждый агент защищает свою роль: выручку, удобство, реализуемость, безопасность, законность','Поиск компромиссов и голосование','Эскалация неразрешённых конфликтов человеку'],
+    prompt:'Модератор: зафиксируй позиции, найди общие интересы, предложи компромисс. Если консенсус невозможен — сформулируй вопрос для человека.',
+    done:'Все конфликты разрешены или эскалированы; каждое решение записано с обоснованием.',
+    hitl:'Неразрешённые конфликты решает владелец продукта.' },
+
+  { id:'signoff', phase:'p6', col:9, num:'6.4', kind:'human',
+    title:'Согласование и baseline', actor:'Владелец продукта и эксперты',
+    short:'Люди утверждают спецификацию; требования версионируются и фиксируются как baseline.',
+    outs:['Утверждённый baseline v1.0'],
+    purpose:'Человек принимает окончательное решение и несёт за него ответственность. ИИ подготовил всё, чтобы решение было быстрым и обоснованным.',
+    methods:['Сводка для руководителя, подготовленная агентом','Ревью только изменений и спорных мест','Версионирование и управление изменениями','Согласование с фиксацией участников и даты'],
+    done:'Спецификация утверждена всеми ответственными, baseline заморожен; дальнейшие изменения — только через управление изменениями.',
+    hitl:'Ключевое решение принимают люди.' },
+
+  /* ---------- РЕЗУЛЬТАТ ---------- */
+  { id:'srs', phase:'p7', col:10, num:'✓', kind:'output',
+    title:'Спецификация функциональных требований', actor:'Итоговый артефакт',
+    short:'Формализованный, согласованный, полный и трассируемый набор требований для системы, превосходящей конкурентов.',
+    badges:['Формализован','Согласован','Полон','Трассируем','Проверяем','Лучше рынка'],
+    outs:['SRS','Матрица трассируемости','Карта превосходства'],
+    purpose:'Готовая основа для проектирования, оценки, разработки и тестирования системы. Каждое требование можно проследить до реальной потребности пользователя или обязательства, а каждое заявленное преимущество — до конкретных требований.',
+    methods:['Функциональные требования с ID, приоритетами и источниками','Критерии приёмки Given / When / Then','Набор автотестов, привязанных к FR-ID','Глоссарий, модель данных и бизнес-правила','Матрица трассируемости от болей до тестов','Карта превосходства над конкурентами','Журнал решений с обоснованиями'],
+    methodsTitle:'Состав пакета',
+    done:'Все quality gates (G0–G6) пройдены, baseline утверждён людьми.' },
+
+  /* ---------- СКВОЗНОЙ СЛОЙ ---------- */
+  { id:'orch', phase:'px', kind:'agent', icon:'hub',
+    title:'Оркестратор процесса', actor:'Агент-координатор',
+    short:'Ведёт граф этапов: запускает агентов, передаёт им контекст, читает результаты проверок и решает, идти дальше или вернуться.',
+    outs:['Состояние процесса','Журнал выполнения'],
+    purpose:'Управляет всем конвейером как графом состояний. Именно он превращает набор отдельных агентов в согласованный процесс с итерациями.',
+    methods:['Параллельный запуск независимых агентов фазы 2','Маршрутизация по результатам quality gates: дальше или на доработку','Бюджет итераций и защита от бесконечных циклов','Передача каждому агенту только нужного контекста — через менеджер контекста на каждом переходе между фазами'],
+    prompt:'Перед переходом к следующей фазе убедись, что выполнены критерии готовности текущей. Если проверка не пройдена после трёх итераций — эскалируй человеку.',
+    done:'Все фазы завершены, критерии готовности выполнены, открытых эскалаций нет.' },
+
+  { id:'ctx', phase:'px', kind:'agent', icon:'layers',
+    title:'Менеджер контекста', actor:'Агент-суммаризатор',
+    short:'На каждом переходе между фазами собирает компактный пакет контекста: суть, решения, открытые вопросы и ссылки на полные артефакты.',
+    outs:['Пакеты контекста','Ссылки на артефакты'],
+    purpose:'Не даёт перегружать контекст следующих моделей: каждый агент получает сжатое и относящееся к его задаче, а не все артефакты целиком. Это дешевле, быстрее и снижает ошибки, когда важное «теряется» в середине длинного контекста.',
+    methods:['Сводка фазы: факты, принятые решения, открытые вопросы, допущения','Отдельный пакет под задачу каждого агента следующей фазы, а не одна общая сводка','Детали не теряются: вместо них — ссылки на полные артефакты в базе знаний, агент подтягивает их по запросу (RAG)','Контроль сжатия: ключевые ID требований, болей и решений не должны выпасть из пакета'],
+    prompt:'Сжимай, но не обобщай: числа, ID, имена сущностей и формулировки решений сохраняй дословно. Всё, что опускаешь, заменяй ссылкой на артефакт.',
+    done:'Каждый агент следующей фазы получил пакет в пределах своего бюджета токенов без потери ключевых ID и решений.' },
+
+  { id:'kb', phase:'px', kind:'infra', icon:'db',
+    title:'База знаний и память', actor:'RAG-хранилище артефактов',
+    short:'Все артефакты, источники и их версии в одном месте; единый глоссарий и контекст для каждого агента.',
+    outs:['Версии артефактов','Ссылки на источники'],
+    purpose:'Общая память конвейера: агенты не теряют контекст между фазами, а каждый факт можно проверить по первоисточнику.',
+    methods:['Векторный поиск (RAG) по исследованиям и артефактам','Версионирование каждого артефакта','Хранение источников и цитат для проверки фактов','Единый глоссарий, общий для всех агентов'],
+    done:'У каждого артефакта есть версия, агент-автор и ссылки на источники.' },
+
+  { id:'trace', phase:'px', kind:'infra', icon:'link',
+    title:'Граф трассируемости', actor:'Сервис связей между артефактами',
+    short:'Связывает идею → боль → возможность → историю → требование → тест. Любое изменение видно по всей цепочке.',
+    outs:['Граф связей','Анализ влияния'],
+    purpose:'Позволяет в любой момент ответить на вопросы «зачем нужно это требование?» и «что затронет это изменение?».',
+    methods:['Типизированные связи между артефактами всех фаз','Анализ влияния (impact analysis) при изменениях','Поиск «сиротских» элементов без связей','Источник данных для анализа полноты (G3)'],
+    done:'Каждое требование связано вверх — с болью или обязательством — и вниз — с критерием приёмки.' },
+
+  { id:'hitl', phase:'px', kind:'human', icon:'shield',
+    title:'Контрольные точки человека', actor:'Автор идеи, эксперты, владелец продукта',
+    short:'На выходе каждой фазы человек утверждает результат или корректирует курс; ИИ готовит краткую сводку для решения.',
+    outs:['Решения и замечания'],
+    purpose:'Гарантирует, что процесс остаётся под контролем людей: ИИ ускоряет и расширяет анализ, но не принимает за людей ключевые решения.',
+    methods:['Сводка фазы: что сделано, что спорно, что требует решения','Утверждение или возврат с комментарием','Экспертная проверка фактов предметной области','Фиксация решений в журнале'],
+    done:'Каждая фаза закрыта явным решением ответственного человека.' },
+];
+
+/* основной поток: [откуда, куда] */
+const EDGES = [
+  ['idea','clarify'],
+  ['clarify','frame'],
+  ['frame','competitors'], ['frame','voc'], ['frame','domain'], ['frame','compliance'],
+  ['competitors','factcheck'], ['voc','factcheck'], ['domain','factcheck'], ['compliance','factcheck'],
+  ['factcheck','gap',       { note:'матрица функций и карта болей' }],
+  ['factcheck','personas',  { note:'боли и Jobs-to-be-Done' }],
+  ['factcheck','model',     { route:'below', note:'онтология домена' }],
+  ['factcheck','reqwriter', { route:'below', note:'обязательные требования' }],
+  ['gap','vision'],
+  ['vision','storymap'], ['personas','storymap'],
+  ['vision','benchmark',    { route:'below', dy:18, note:'критерии превосходства' }],
+  ['storymap','reqwriter'], ['model','reqwriter'],
+  ['reqwriter','acceptance'],
+  ['acceptance','testgen'], ['testgen','quality'],
+  ['quality','critic'], ['critic','coverage'], ['coverage','simulation'], ['simulation','usertest'], ['usertest','benchmark'],
+  ['benchmark','feasibility'], ['feasibility','prioritize'],
+  ['prioritize','debate'], ['debate','signoff'],
+  ['signoff','srs'],
+];
+
+/* циклы доработки (обратная связь) */
+const LOOPS = [
+  { from:'factcheck', to:'competitors', level:0, label:'Не подтверждено' },
+  { from:'quality',   to:'reqwriter', level:0, label:'Дефекты формулировок' },
+  { from:'coverage',  to:'storymap',  level:1, label:'Пробелы покрытия' },
+  { from:'benchmark', to:'gap',       level:2, label:'Нет превосходства' },
+  { from:'debate',    to:'clarify',   level:3, label:'Пересмотр замысла и scope' },
+  { from:'feasibility', to:'reqwriter', route:'bottom', label:'Невыполнимо → переписать требование' },
+];
+
+/* =========================================================
+   LLM-МОДЕЛИ: УРОВНИ «РАЗУМА», СПЕЦИАЛИЗАЦИИ, НАЗНАЧЕНИЯ
+   Оценка экспертная, по состоянию на ноябрь 2026
+   ========================================================= */
+const TIERS = {
+  5: { name:'Предельный', desc:'Максимальная глубина рассуждений. Только там, где решается стратегия и ошибка стоит дороже всего.' },
+  4: { name:'Фронтир',    desc:'Сложный анализ, точные формулировки, формальные модели, независимая критика.' },
+  3: { name:'Сильный',    desc:'Объёмная структурная работа и специализированные модели: поиск, открытые веса.' },
+  2: { name:'Быстрый',    desc:'Массовые дешёвые операции: разметка, классификация, проверка по чек-листу.' },
+  1: { name:'Служебный',  desc:'Не рассуждают: векторный поиск по базе знаний, распознавание речи.' },
+};
+const SPECS = {
+  reason: { icon:'brain',  label:'Глубокие рассуждения' },
+  code:   { icon:'code',   label:'Код и формальные модели' },
+  search: { icon:'search', label:'Веб-поиск со ссылками' },
+  fast:   { icon:'gauge',  label:'Объём и скорость' },
+  local:  { icon:'lock',   label:'Открытые веса, свой контур' },
+  data:   { icon:'db',     label:'Служебные: векторы, речь' },
+};
+const MODELS = {
+  fable:  { name:'Claude Fable 5.1', short:'Fable 5.1', vendor:'Anthropic', tier:5, spec:['reason'], price:'$10 / $50 за 1M токенов',
+            note:'Самая мощная широко доступная модель Anthropic. Дорогая и неторопливая — её место там, где решается стратегия.' },
+  opus:   { name:'Claude Opus 5.5', short:'Opus 5.5', vendor:'Anthropic', tier:4, spec:['reason','code'], price:'$4 / $20 за 1M токенов',
+            note:'Флагман для точного анализа, формулировок и агентной работы с кодом. Основная «рабочая лошадь» ответственных этапов.' },
+  gpt:    { name:'GPT-6.1', short:'GPT-6.1', vendor:'OpenAI', tier:4, spec:['reason'],
+            note:'Флагман другого вендора. Нужен как независимый проверяющий — фактов и требований: модели разных семейств ошибаются по-разному.' },
+  sonnet: { name:'Claude Sonnet 5.5', short:'Sonnet 5.5', vendor:'Anthropic', tier:3, spec:['code','fast'], price:'$2 / $10 за 1M токенов',
+            note:'Баланс скорости, цены и качества: истории, сценарии, Gherkin, сводки — всё, что делается в больших объёмах.' },
+  dsPro:  { name:'DeepSeek V4-Pro', short:'DeepSeek V4-Pro', vendor:'DeepSeek · открытые веса', tier:3, spec:['local'],
+            note:'Сильная открытая модель: разворачивается в своём контуре для конфиденциальных данных. Уровнем ниже закрытых флагманов.' },
+  sonar:  { name:'Perplexity Sonar Deep Research', short:'Sonar Deep Research', vendor:'Perplexity', tier:3, spec:['search'], price:'≈ $2 / $8 + оплата поиска',
+            note:'Заточена под многошаговый веб-поиск и отчёты со ссылками. В рассуждениях уступает фронтиру, поэтому синтез отдаётся другим моделям.' },
+  haiku:  { name:'Claude Haiku 5.5', short:'Haiku 5.5', vendor:'Anthropic', tier:2, spec:['fast'], price:'$0,10 / $0,50 за 1M токенов',
+            note:'Очень дешёвая и быстрая: разметка тысяч отзывов, проверка каждого требования, извлечение связей.' },
+  embed:  { name:'Эмбеддинги + реранкер', short:'Эмбеддинги', vendor:'векторный поиск', tier:1, spec:['data'],
+            note:'Превращают тексты в векторы и упорядочивают найденное — основа RAG-поиска по базе знаний.' },
+  asr:    { name:'Распознавание речи (ASR)', short:'ASR', vendor:'речь → текст', tier:1, spec:['data'],
+            note:'Переводит голосовые заметки автора идеи в текст.' },
+};
+/* какие модели использует каждый этап (m — модель, r — роль) и почему */
+const MODEL_USE = {
+  idea:       { m:[{m:'asr', r:'голос → текст'}], why:'Здесь не нужно рассуждать — нужно ничего не потерять. Достаточно служебного распознавания речи.' },
+  clarify:    { m:[{m:'opus'}], why:'Качество вопросов определяет всё, что будет дальше, а диалог короткий — экономить здесь бессмысленно. Модель должна держать весь контекст и замечать скрытые допущения.' },
+  frame:      { m:[{m:'opus'}], why:'Точная, опровержимая постановка проблемы — задача на строгость мышления; ошибка здесь тиражируется во все фазы.' },
+  competitors:{ m:[{m:'sonar', r:'поиск'}, {m:'sonnet', r:'матрица'}], why:'Поисковая модель лучше собирает свежие факты со ссылками, но слабее рассуждает; сведение фактов в матрицу функций отдаётся сильному универсалу.' },
+  voc:        { m:[{m:'haiku', r:'разметка'}, {m:'sonnet', r:'JTBD'}], why:'Тысячи отзывов размечает дешёвая быстрая модель в пакетном режиме, а кластеры и формулировки JTBD — модель уровнем выше.' },
+  domain:     { m:[{m:'sonar', r:'источники'}, {m:'opus', r:'онтология'}], why:'Поиск находит первоисточники, а непротиворечивая онтология домена требует фронтир-уровня рассуждений.' },
+  compliance: { m:[{m:'sonar', r:'нормы'}, {m:'opus', r:'обязательства'}], why:'Цена ошибки юридическая: нужен поиск действующих редакций норм и сильная модель, которая переводит их в проверяемые обязательства с цитатами.' },
+  factcheck:  { m:[{m:'sonar', r:'источники'}, {m:'gpt', r:'сверка'}], why:'Проверять должен не тот, кто писал: сверку ведёт модель другого вендора, а поисковая модель заново находит первоисточники.' },
+  usertest:   { m:[{m:'opus', r:'прототип'}, {m:'sonnet', r:'разбор сессий'}], why:'Прототип — это код, его пишет сильная «кодовая» модель фронтир-уровня. Записи сессий размечает модель среднего уровня, а выводы делают люди.' },
+  feasibility:{ m:[{m:'opus'}], why:'Оценка реализуемости требует инженерного мышления и знания технологий — профиль сильной «кодовой» модели фронтир-уровня.' },
+  testgen:    { m:[{m:'opus', r:'каркас'}, {m:'sonnet', r:'тесты'}], why:'Архитектуру тестового каркаса и слой Page Object проектирует сильнейшая «кодовая» модель, а сотни однотипных тестов по готовому каркасу пишет более быстрая и дешёвая.' },
+  ctx:        { m:[{m:'sonnet'}], why:'Сжатие должно быть точным, а не просто коротким: модель уровня Sonnet бережно сохраняет числа и ID и недорого стоит при частых вызовах.' },
+  gap:        { m:[{m:'fable'}], why:'Ключевая точка конвейера — здесь рождается превосходство. Нужно держать в голове все артефакты фазы 2 сразу и находить неочевидные связи.' },
+  vision:     { m:[{m:'fable'}], why:'Стратегический выбор и позиционирование — самые «дорогие» решения процесса; разница между уровнями моделей здесь заметнее всего.' },
+  personas:   { m:[{m:'sonnet'}], why:'Структурная работа по готовым данным VoC: сильного универсала достаточно, фронтир-модель не даст заметного прироста.' },
+  storymap:   { m:[{m:'sonnet'}], why:'Большой объём однотипной декомпозиции — оптимум цены и качества.' },
+  model:      { m:[{m:'opus'}], why:'Формальное моделирование близко к программированию: модель пишет ER-диаграммы и автоматы как код (Mermaid, PlantUML) и проверяет их исполнением.' },
+  reqwriter:  { m:[{m:'opus'}], why:'Спецификация — главный артефакт. Точность формулировок и согласованность сотен требований между собой требуют фронтир-уровня.' },
+  acceptance: { m:[{m:'sonnet'}], why:'Gherkin — по сути код тестов, а сценариев сотни: сильная «кодовая» модель среднего уровня здесь оптимальна.' },
+  quality:    { m:[{m:'haiku'}], why:'Проверка каждого требования по чек-листу — массовая и дешёвая операция. Детерминированные правила (словарь запрещённых слов) срабатывают ещё до модели.' },
+  critic:     { m:[{m:'gpt'}], why:'Критик должен быть независим от автора требований: модель другого вендора ошибается иначе и находит то, что Opus пропустил бы в собственном тексте.' },
+  coverage:   { m:[{m:'sonnet'}], why:'Основную работу делает детерминированный обход графа трассировки; модель нужна для смыслового сопоставления и формулировки пробелов.' },
+  simulation: { m:[{m:'sonnet', r:'персоны'}, {m:'dsPro', r:'персоны'}], why:'Персоны на моделях разных семейств ведут себя по-разному — это снижает «монокультуру» синтетических пользователей.' },
+  benchmark:  { m:[{m:'fable', r:'вердикт'}, {m:'sonar', r:'факты'}], why:'Финальный стратегический вердикт — максимальный уровень; перед этим поисковая модель обновляет данные о конкурентах.' },
+  prioritize: { m:[{m:'opus'}], why:'Компромиссы ценности, трудоёмкости и рисков требуют сильного рассуждения, но не предельного уровня.' },
+  debate:     { m:[{m:'fable', r:'модератор'}, {m:'sonnet', r:'роли'}], why:'Модератор сводит позиции и ищет компромисс — нужен максимум разума. Роли играют модели уровнем ниже; часть ролей полезно отдать другим семействам (GPT-6.1, DeepSeek V4-Pro), чтобы позиции не сливались в одну.' },
+  signoff:    { m:[{m:'sonnet', r:'сводка'}], why:'Решение принимают люди; модель только готовит краткую сводку изменений и спорных мест.' },
+  orch:       { m:[{m:'opus'}], why:'Решения о переходах и возвратах ответственные, но короткие. Сам граф этапов лучше держать в детерминированном движке, а модели оставить только суждения.' },
+  kb:         { m:[{m:'embed'}], why:'Поиск по базе знаний — задача векторных моделей и реранкера, а не рассуждающих LLM.' },
+  trace:      { m:[{m:'haiku'}], why:'Извлечение и проверка тысяч связей — массовая операция для быстрой модели; хранение — в графовой базе данных.' },
+  hitl:       { m:[{m:'sonnet', r:'сводки'}], why:'Сводки для людей должны быть точными и краткими — уровня Sonnet достаточно.' },
+};
+for (const n of NODES) {
+  const u = MODEL_USE[n.id];
+  if (u) { n.models = u.m; n.mwhy = u.why; n.mtier = Math.max(...u.m.map(x => MODELS[x.m].tier)); }
+}
+const meter = t => `<span class="meter" aria-hidden="true">${[1,2,3,4,5].map(i => `<i${i <= t ? ' class="on"' : ''}></i>`).join('')}</span>`;
+const specIcons = m => m.spec.map(s => `<span title="${SPECS[s].label}" style="display:inline-flex">${ICONS[SPECS[s].icon]}</span>`).join('');
+
+/* =========================================================
+   АВТОНОМНЫЙ РЕЖИМ: что меняется, когда решения принимает агент-арбитр
+   ========================================================= */
+const AUTO = {
+  clarify:    { hitl:null, short:'Задаёт вопросы по 5W2H и сам выбирает наиболее вероятные ответы по сырой идее, помечая каждый как допущение для проверки в фазе 2.',
+                purpose:'Превратить расплывчатый замысел в осмысленный бриф без участия автора: агент сам задаёт ключевые вопросы и выбирает наиболее вероятные ответы, явно отделяя их как допущения от фактов.',
+                prompt:'Ты — опытный бизнес-аналитик. Задай себе ключевые вопросы о проблеме, аудитории, контексте и критериях успеха. Для каждого выбери наиболее вероятный ответ по идее и данным рынка и пометь его как допущение.',
+                autoNote:'После постановки задачи автор идеи не участвует: агент сам отвечает на свои вопросы, выбирая наиболее вероятный вариант, и помечает каждый ответ как допущение. Все допущения затем проверяются данными исследования и фильтром G0.' },
+  frame:      { done:'Проблема сформулирована измеримо; границы scope зафиксированы как допущения и проверяются в фазе 2.',
+                autoNote:'Границы scope не согласуются с автором, а фиксируются как допущения: их подтверждают или опровергают данные исследования.' },
+  domain:     { done:'Глоссарий покрывает все термины брифа; ключевые процессы смоделированы и прошли проверку фактов (G0).',
+                autoNote:'Вместо проверки экспертом модель процессов сверяется с первоисточниками на этапе G0.' },
+  factcheck:  { hitl:null, autoNote:'Вместо выборочной проверки экспертом — двойная независимая проверка: спорный факт принимается, только если его подтверждают второй источник и вторая модель.' },
+  vision:     { hitl:null, done:'Дифференциаторы измеримы, подтверждены возможностями из 3.1 и утверждены агентом-арбитром; критерии превосходства зафиксированы.', autoNote:'Стратегию утверждает агент-арбитр: дифференциаторы должны быть подтверждены возможностями из 3.1 и измеримы, иначе — возврат на доработку.' },
+  usertest:   { hitl:null, kind:'agent', actor:'Агент-исследователь + панель респондентов',
+                short:'Агент сам публикует немодерируемый тест прототипа на панели респондентов и разбирает записи сессий.',
+                m:[{m:'opus', r:'прототип'}, {m:'sonnet', r:'разбор сессий'}], why:'Прототип — это код, его пишет сильная «кодовая» модель фронтир-уровня. Записи сессий размечает модель среднего уровня, а выводы делает агент и проверяет арбитр.',
+                autoNote:'Люди остаются только респондентами, но не принимают решений: агент сам набирает участников через сервис немодерируемого тестирования, запускает задания и разбирает записи.' },
+  feasibility:{ hitl:null, autoNote:'Оценки принимаются без подтверждения разработчиком; для требований с высокой неопределённостью берётся пессимистичная оценка.' },
+  debate:     { hitl:null,
+                methods:['Структурированные дебаты под управлением агента-модератора','Каждый агент защищает свою роль: выручку, удобство, реализуемость, безопасность, законность','Поиск компромиссов и голосование','Неразрешённые конфликты передаются агенту-арбитру'],
+                prompt:'Модератор: зафиксируй позиции, найди общие интересы, предложи компромисс. Если консенсус невозможен — передай вопрос агенту-арбитру с позициями сторон и данными.',
+                autoNote:'Неразрешённые конфликты решает агент-арбитр по заранее заданным весам критериев (ценность, риск, стоимость, законность); каждое такое решение помечается в журнале.' },
+  signoff:    { hitl:null, kind:'agent', title:'Автоматическое утверждение baseline', actor:'Агент-арбитр',
+                short:'Утверждает baseline, если пройдены все quality gates и нет критичных рисков; решения с низкой уверенностью собирает для последующего просмотра.',
+                outs:['Baseline v1.0 (авто)','Решения для ревью'],
+                purpose:'Финальное утверждение без участия людей. Арбитр не полагается на «ощущение готовности», а проверяет формальные условия выпуска baseline.',
+                methods:['Проверка условий: все фильтры G0–G6 пройдены, критичных рисков и неразрешённых конфликтов нет','Сводка решений с низкой уверенностью — чтобы люди могли просмотреть их после прогона','Версионирование и управление изменениями','Фиксация в журнале: какой агент и на каком основании утвердил baseline'],
+                done:'Baseline утверждён арбитром при выполнении всех условий и заморожен; решения с низкой уверенностью вынесены в отдельный список.',
+                m:[{m:'fable', r:'арбитр'}], why:'Финальное решение без человека — самое ответственное в конвейере, поэтому арбитр работает на модели высшего уровня.',
+                autoNote:'Baseline утверждается автоматически при формальных условиях: пройдены все фильтры G0–G6, критичных рисков нет, бюджет не превышен. Иначе — повторная итерация, а когда бюджет итераций исчерпан, — остановка с отчётом.' },
+  hitl:       { kind:'agent', title:'Агент-арбитр', actor:'Принимает решения вместо людей',
+                short:'Закрывает все контрольные точки по правилам и порогам уверенности, заданным до запуска; каждое решение с обоснованием попадает в журнал.',
+                outs:['Журнал решений','Решения для ревью'],
+                m:[{m:'fable'}], why:'Арбитр заменяет людей в самых ответственных решениях — это место для модели высшего уровня.',
+                purpose:'Позволяет прогнать конвейер полностью без участия людей. Качество держится не на доверии к модели, а на правилах, заданных до запуска: весах критериев, порогах уверенности и бюджете итераций.',
+                methods:['Правила задаются до запуска: веса критериев, допустимые риски, бюджет','Решение принимается, только если уверенность выше порога; иначе — дополнительная итерация или вариант с наименьшим риском','Каждое решение — с обоснованием и ссылками на данные','Решения с низкой уверенностью собираются в отдельный список, чтобы люди могли просмотреть их позже'],
+                prompt:'Принимай решение только на основании данных в артефактах и заданных весов. Если данных недостаточно — выбирай вариант с наименьшим риском и объясни почему.',
+                done:'Каждая контрольная точка закрыта решением с обоснованием; решения с низкой уверенностью вынесены в отдельный список.',
+                autoNote:'Заменяет контрольные точки человека во всех фазах.' },
+};
+AUTO.hitl.icon = 'robot';
+AUTO.srs  = { done:'Все quality gates (G0–G6) пройдены, baseline утверждён агентом-арбитром.' };
+AUTO.orch = { prompt:'Перед переходом к следующей фазе убедись, что выполнены критерии готовности текущей. Если проверка не пройдена после трёх итераций — передай решение агенту-арбитру; если исчерпан бюджет — остановись с отчётом.',
+              autoNote:'Эскалации уходят не человеку, а агенту-арбитру; при исчерпании бюджета итераций прогон останавливается с отчётом.' };
+const PHASE_AUTO_NOTE = { p1:'Самоинтервью агента по сырой идее', p6:'Последнее слово — за агентом-арбитром' };
+const MODE_FIELDS = ['title','actor','short','kind','icon','outs','purpose','methods','prompt','done','hitl','models','mwhy','mtier'];
+for (const n of NODES) n.base = Object.fromEntries(MODE_FIELDS.map(f => [f, n[f]]));
+let autoMode = false;
+function applyModeData(){
+  for (const n of NODES) {
+    Object.assign(n, n.base);
+    n.isAuto = false; n.autoNote = null;
+    const o = autoMode && AUTO[n.id];
+    if (!o) continue;
+    const { m, why, ...rest } = o;
+    Object.assign(n, rest);
+    if (m) { n.models = m; n.mwhy = why; n.mtier = Math.max(...m.map(x => MODELS[x.m].tier)); }
+    n.isAuto = true;
+  }
+}
+
+/* =========================================================
+   ГЕОМЕТРИЯ
+   ========================================================= */
+// x колонок: 0 вход · 1 фаза 1 · 2–3 фаза 2 · 4 фаза 3 · 5–6 фаза 4 · 7–8 фаза 5 · 9 фаза 6 · 10 результат
+// (перед фазами 5 и 6 промежутки шире — там идут линии возвратов)
+const COL_X = [0, 330, 660, 990, 1320, 1650, 1980, 2380, 2730, 3100, 3430];
+const GAP_Y = 36;          // вертикальный зазор между карточками
+const COL_SHIFT = {};      // ручная подстройка колонок по вертикали
+const CH0 = 40, CHSTEP = 18;   // каналы для линий обратной связи
+const HEAD_H = 96;         // высота заголовка дорожки
+const MAX_LEVEL = Math.max(...LOOPS.filter(l => l.route !== 'bottom').map(l => l.level));
+const MIN_S = 0.15, MAX_S = 2.2;
+const LS_LAYOUT = 'aiReqPipeline.layout.v2';
+const LS_THEME = 'aiReqPipeline.theme';
+const LS_COLOR = 'aiReqPipeline.colorMode';
+
+const $ = s => document.querySelector(s);
+const stage = $('#stage'), world = $('#world'), lanesEl = $('#lanes'), svg = $('#edges'), nodesEl = $('#nodes');
+const panel = $('#panel'), panelBody = $('#panelBody'), panelMeta = $('#panelMeta'), tourPos = $('#tourPos');
+const zoomVal = $('#zoomVal'), hint = $('#hint');
+const SVGNS = 'http://www.w3.org/2000/svg';
+const byId = Object.fromEntries(NODES.map(n => [n.id, n]));
+const ORDER = NODES.map(n => n.id);
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isNarrow = () => window.innerWidth <= 720;
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k, v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} },
+};
+function plural(n, f){ const a = n % 10, b = n % 100; if (a === 1 && b !== 11) return f[0]; if (a >= 2 && a <= 4 && (b < 10 || b >= 20)) return f[1]; return f[2]; }
+function mk(tag, attrs, parent){ const el = document.createElementNS(SVGNS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); if (parent) parent.appendChild(el); return el; }
+
+/* =========================================================
+   ПОСТРОЕНИЕ DOM
+   ========================================================= */
+document.querySelectorAll('[data-icon]').forEach(el => el.insertAdjacentHTML('afterbegin', ICONS[el.dataset.icon]));
+document.querySelectorAll('.lg-item[data-kind]').forEach(el => {
+  const k = KINDS[el.dataset.kind];
+  el.innerHTML = ICONS[k.icon].replace('<svg ', '<svg class="ic" ') + esc(k.label);
+});
+
+// статистика
+(() => {
+  const stages = NODES.filter(n => PHASE_NUM[n.phase]).length;
+  const phases = Object.keys(PHASE_NUM).length;
+  const gates = NODES.filter(n => n.gate).length;
+  const agents = NODES.filter(n => n.kind === 'agent' || n.kind === 'multi').length;
+  const items = [
+    [phases, ['фаза','фазы','фаз']],
+    [stages, ['этап','этапа','этапов']],
+    [agents, ['ИИ-агент','ИИ-агента','ИИ-агентов']],
+    [gates,  ['проверка качества','проверки качества','проверок качества']],
+    [LOOPS.length, ['цикл доработки','цикла доработки','циклов доработки']],
+  ];
+  $('#stats').innerHTML = items.map(([n, f]) => `<span class="stat"><b>${n}</b> ${plural(n, f)}</span>`).join('');
+})();
+
+// фазовая навигация
+(() => {
+  const bar = $('#phasebar');
+  let html = `<button class="pchip" data-phase="all" style="--c:var(--text-3)"><i></i>Вся схема</button>`;
+  for (const [id, p] of Object.entries(PHASES)) {
+    html += `<button class="pchip" data-phase="${id}" style="--c:var(--${id})"><i></i>${PHASE_NUM[id] ? `<span class="pn">${PHASE_NUM[id]}</span>` : ''}${esc(p.chip)}</button>`;
+  }
+  bar.innerHTML = html;
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('.pchip'); if (!b) return;
+    viewTouched = true;
+    if (b.dataset.phase === 'all') { fitAll(true); return; }
+    focusPhase(b.dataset.phase);
+  });
+})();
+
+// дорожки фаз
+const laneEls = {}, laneRects = {};
+for (const [id, p] of Object.entries(PHASES)) {
+  const el = document.createElement('div');
+  el.className = 'lane';
+  el.style.setProperty('--pc', `var(--${id})`);
+  el.innerHTML = `<div class="lane-head"><div class="lane-eyebrow">${esc(p.eyebrow)}</div><div class="lane-name">${esc(p.name)}</div><div class="lane-note">${esc(p.note)}</div></div>`;
+  lanesEl.appendChild(el);
+  laneEls[id] = el;
+}
+
+// карточки
+function nodeHTML(n){
+  const k = KINDS[n.kind];
+  const icon = ICONS[n.icon || k.icon];
+  const flags = (n.isAuto ? `<span class="node-auto" title="Автономный режим: решение принимает агент">${ICONS.robot}авто</span>` : '')
+    + (n.gate ? `<span class="node-gate" title="Quality gate — фильтр качества">${esc(n.gate)}</span>` : '');
+  const top = `<div class="node-top">${n.num ? `<span class="node-num">${esc(n.num)}</span>` : ''}<span class="node-kind">${icon}${esc(k.label)}</span>${flags ? `<span class="node-flags">${flags}</span>` : ''}</div>`;
+  const chips = n.models ? `<div class="node-models">${n.models.map(u => {
+      const m = MODELS[u.m];
+      return `<span class="mchip" style="--t:var(--t${m.tier})" title="${esc(m.name)} — уровень ${m.tier}/5 «${TIERS[m.tier].name}»${u.r ? ' · ' + esc(u.r) : ''}">${meter(m.tier)}<b>${esc(m.short)}</b>${u.r ? `<span class="mrole">${esc(u.r)}</span>` : ''}${specIcons(m)}</span>`;
+    }).join('')}</div>` : '';
+  const body = `<h3 class="node-title">${esc(n.title)}</h3><div class="node-actor">${esc(n.actor)}</div>${chips}<p class="node-desc">${esc(n.short)}</p>`
+    + (n.badges ? `<div class="node-badges">${n.badges.map(b => `<span class="badge">${esc(b)}</span>`).join('')}</div>` : '')
+    + `<div class="node-outs">${n.outs.map(o => `<span class="out">${esc(o)}</span>`).join('')}</div>`;
+  const ports = '<span class="port port-l"></span><span class="port port-r"></span><span class="port port-t"></span><span class="port port-b"></span>';
+  if (n.phase === 'px') return `<div class="x-icon">${icon}</div><div>${top}${body}</div>`;
+  return top + body + ports;
+}
+function renderNode(n){
+  const el = n.el;
+  const keep = ['selected','dim','mdim','mhit','dragging','has-l','has-r','has-t','has-b'].filter(c => el.classList.contains(c));
+  el.className = `node kind-${n.kind}` + (n.phase === 'px' ? ' cross' : '') + (keep.length ? ' ' + keep.join(' ') : '');
+  el.setAttribute('aria-label', `${n.num ? n.num + ' ' : ''}${n.title}. ${n.actor}`);
+  el.style.setProperty('--pc', `var(--${n.phase})`);
+  el.style.setProperty('--tc', n.mtier ? `var(--t${n.mtier})` : `var(--${n.phase})`);
+  el.innerHTML = nodeHTML(n);
+}
+for (const n of NODES) {
+  const el = document.createElement('article');
+  el.dataset.id = n.id;
+  el.tabIndex = 0;
+  el.setAttribute('role', 'button');
+  n.el = el;
+  renderNode(n);
+  el.addEventListener('pointerenter', () => setHover(n.id));
+  el.addEventListener('pointerleave', () => setHover(null));
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(n.id, { center:true }); } });
+  nodesEl.appendChild(el);
+  n.el = el; n.x = 0; n.y = 0; n.sides = '';
+}
+
+// связи
+const edgeEls = EDGES.map(([a, b, o = {}]) => {
+  const g = mk('g', { class:'edge' }, svg);
+  g.style.setProperty('--c', `var(--${byId[a].phase})`);
+  return { a, b, route:o.route || '', dy:o.dy || 0, g, path: mk('path', { class:'edge-line' }, g), arrow: mk('path', { class:'edge-arrow' }, g) };
+});
+const loopEls = LOOPS.map(l => {
+  const g = mk('g', { class:'edge loop' }, svg);
+  g.style.setProperty('--c', 'var(--loop)');
+  const path = mk('path', { class:'edge-line' }, g);
+  const arrow = mk('path', { class:'edge-arrow' }, g);
+  const lg = mk('g', { class:'loop-label' }, g);
+  const rect = mk('rect', { rx:10, ry:10, height:22 }, lg);
+  const text = mk('text', { 'text-anchor':'middle' }, lg);
+  text.textContent = '↺ ' + l.label;
+  return { ...l, a:l.from, b:l.to, g, path, arrow, rect, text, tw:0 };
+});
+
+/* =========================================================
+   РАСКЛАДКА
+   ========================================================= */
+function measure(){ for (const n of NODES) { n.w = n.el.offsetWidth; n.h = n.el.offsetHeight; } }
+function place(n){ n.el.style.transform = `translate(${n.x}px,${n.y}px)`; }
+
+function defaultLayout(){
+  const cols = new Map();
+  for (const n of NODES) if (n.phase !== 'px') { if (!cols.has(n.col)) cols.set(n.col, []); cols.get(n.col).push(n); }
+  let maxH = 0; const tot = new Map();
+  for (const [c, list] of cols) { const t = list.reduce((s, n) => s + n.h, 0) + GAP_Y * (list.length - 1); tot.set(c, t); maxH = Math.max(maxH, t); }
+  for (const [c, list] of cols) {
+    let y = (maxH - tot.get(c)) / 2 + (COL_SHIFT[c] || 0);
+    for (const n of list) { n.x = COL_X[c]; n.y = Math.round(y); y += n.h + GAP_Y; }
+  }
+  const main = NODES.filter(n => n.phase !== 'px');
+  const maxY = Math.max(...main.map(n => n.y + n.h));
+  const maxCol = Math.max(...cols.keys());
+  const totalW = COL_X[maxCol] + main[0].w;
+  const cross = NODES.filter(n => n.phase === 'px');
+  const step = (totalW - cross[0].w) / (cross.length - 1);
+  cross.forEach((n, i) => { n.x = Math.round(i * step); n.y = Math.round(maxY + 32 + 56 + HEAD_H); });
+}
+
+function loadLayout(){
+  const raw = store.get(LS_LAYOUT); if (!raw) return false;
+  try {
+    const o = JSON.parse(raw);
+    if (!NODES.every(n => Array.isArray(o[n.id]) && o[n.id].every(Number.isFinite))) return false;
+    NODES.forEach(n => { [n.x, n.y] = o[n.id]; });
+    return true;
+  } catch(e) { return false; }
+}
+function saveLayout(){ store.set(LS_LAYOUT, JSON.stringify(Object.fromEntries(NODES.map(n => [n.id, [n.x, n.y]])))); }
+
+function mainBounds(){
+  let minY = Infinity, maxY = -Infinity;
+  for (const n of NODES) if (n.phase !== 'px') { minY = Math.min(minY, n.y); maxY = Math.max(maxY, n.y + n.h); }
+  return { minY, maxY };
+}
+
+function updateLanes(){
+  const { minY, maxY } = mainBounds();
+  const top = minY - CH0 - MAX_LEVEL * CHSTEP - 26 - HEAD_H;
+  const bottom = maxY + 32;
+  for (const id of Object.keys(PHASES)) {
+    const ns = NODES.filter(n => n.phase === id);
+    const x0 = Math.min(...ns.map(n => n.x)) - 20, x1 = Math.max(...ns.map(n => n.x + n.w)) + 20;
+    let y0, y1;
+    if (id === 'px') { y0 = Math.min(...ns.map(n => n.y)) - HEAD_H + 6; y1 = Math.max(...ns.map(n => n.y + n.h)) + 24; }
+    else { y0 = top; y1 = bottom; }
+    const r = { x:x0, y:y0, w:x1 - x0, h:y1 - y0 };
+    laneRects[id] = r;
+    const s = laneEls[id].style;
+    s.transform = `translate(${r.x}px,${r.y}px)`; s.width = r.w + 'px'; s.height = r.h + 'px';
+  }
+}
+
+function arrowD(tx, ty, ux, uy){
+  const L = 9, W = 4.8, bx = tx - ux * L, by = ty - uy * L, px = -uy, py = ux;
+  return `M${tx},${ty}L${bx + px * W},${by + py * W}L${bx - px * W},${by - py * W}Z`;
+}
+function fwdGeom(a, b){
+  const acx = a.x + a.w / 2, bcx = b.x + b.w / 2;
+  let sx, sy, tx, ty, ux, uy, d, sSide, tSide;
+  if (Math.abs(acx - bcx) < (a.w + b.w) / 4) {           // карточки в одной колонке
+    const down = b.y >= a.y;
+    sx = acx; tx = bcx; uy = down ? 1 : -1; ux = 0;
+    sy = down ? a.y + a.h : a.y; ty = down ? b.y : b.y + b.h;
+    sSide = down ? 'b' : 't'; tSide = down ? 't' : 'b';
+    const ey = ty - uy * 8, k = Math.max(16, Math.abs(ey - sy) * 0.5);
+    d = `M${sx},${sy}C${sx},${sy + uy * k} ${tx},${ey - uy * k} ${tx},${ey}`;
+  } else {
+    const right = bcx > acx;
+    ux = right ? 1 : -1; uy = 0;
+    sx = right ? a.x + a.w : a.x; sy = a.y + a.h / 2;
+    tx = right ? b.x : b.x + b.w; ty = b.y + b.h / 2;
+    sSide = right ? 'r' : 'l'; tSide = right ? 'l' : 'r';
+    const ex = tx - ux * 8, k = Math.max(36, Math.abs(ex - sx) * 0.5);
+    d = `M${sx},${sy}C${sx + ux * k},${sy} ${ex - ux * k},${ty} ${ex},${ty}`;
+  }
+  return { d, arrow: arrowD(tx, ty, ux, uy), sSide, tSide };
+}
+/* длинная связь, огибающая карточки промежуточных колонок снизу */
+function belowGeom(a, b, dy = 0){
+  const sx = a.x + a.w, sy = a.y + a.h / 2, tx = b.x, ty = b.y + b.h / 2;
+  if (tx <= sx + 80) return fwdGeom(a, b);
+  let ob = -Infinity;
+  for (const n of NODES) {
+    if (n.phase === 'px' || n === a || n === b) continue;
+    if (n.x < tx - 10 && n.x + n.w > sx + 10) ob = Math.max(ob, n.y + n.h);
+  }
+  const g1 = sx + 30, g2 = tx - 34;
+  const pts = (ob === -Infinity || sy >= ob + 14)
+    ? [[sx, sy], [g2, sy], [g2, ty], [tx - 8, ty]]
+    : [[sx, sy], [g1, sy], [g1, ob + 26 + dy], [g2, ob + 26 + dy], [g2, ty], [tx - 8, ty]];
+  return { d: roundedPath(pts, 18), arrow: arrowD(tx, ty, 1, 0), sSide:'r', tSide:'l' };
+}
+function roundedPath(p, r){
+  let d = `M${p[0][0]},${p[0][1]}`;
+  for (let i = 1; i < p.length - 1; i++) {
+    const [x0, y0] = p[i - 1], [x1, y1] = p[i], [x2, y2] = p[i + 1];
+    const l1 = Math.hypot(x1 - x0, y1 - y0), l2 = Math.hypot(x2 - x1, y2 - y1);
+    const rr = Math.min(r, l1 / 2, l2 / 2);
+    if (rr < 0.5) { d += `L${x1},${y1}`; continue; }
+    d += `L${x1 + (x0 - x1) / l1 * rr},${y1 + (y0 - y1) / l1 * rr}Q${x1},${y1} ${x1 + (x2 - x1) / l2 * rr},${y1 + (y2 - y1) / l2 * rr}`;
+  }
+  const last = p[p.length - 1];
+  return d + `L${last[0]},${last[1]}`;
+}
+
+function updateEdges(){
+  const sides = Object.fromEntries(NODES.map(n => [n.id, new Set()]));
+  for (const e of edgeEls) {
+    const g = e.route === 'below' ? belowGeom(byId[e.a], byId[e.b], e.dy) : fwdGeom(byId[e.a], byId[e.b]);
+    e.path.setAttribute('d', g.d); e.arrow.setAttribute('d', g.arrow);
+    sides[e.a].add(g.sSide); sides[e.b].add(g.tSide);
+  }
+  const { minY, maxY } = mainBounds();
+  for (const l of loopEls) {
+    const a = byId[l.a], b = byId[l.b];
+    if (!l.tw) l.tw = l.text.getComputedTextLength() || l.label.length * 6.6;
+    const sx = a.x, sy = a.y + 26;
+    let lx, ly;
+    if (l.route === 'bottom') {
+      // возврат по нижнему каналу: под всеми карточками, вход в цель справа
+      const gx1 = sx - 22, by = maxY + 62;
+      const gx2 = b.x + b.w + 40, tx = b.x + b.w, ty = b.y + b.h / 2;
+      l.path.setAttribute('d', roundedPath([[sx, sy], [gx1, sy], [gx1, by], [gx2, by], [gx2, ty], [tx + 8, ty]], 12));
+      l.arrow.setAttribute('d', arrowD(tx, ty, -1, 0));
+      const dir = Math.sign(gx1 - gx2) || 1;
+      lx = gx2 + dir * Math.min(l.tw / 2 + 26, Math.abs(gx1 - gx2) / 2); ly = by;
+    } else {
+      const gx = sx - 22 - l.level * 11;
+      const cy = minY - CH0 - l.level * CHSTEP;
+      const tx = b.x + b.w / 2, ty = b.y;
+      l.path.setAttribute('d', roundedPath([[sx, sy], [gx, sy], [gx, cy], [tx, cy], [tx, ty - 8]], 12));
+      l.arrow.setAttribute('d', arrowD(tx, ty, 0, 1));
+      const dir = Math.sign(gx - tx) || 1;
+      lx = tx + dir * Math.min(l.tw / 2 + 26, Math.abs(gx - tx) / 2); ly = cy;
+    }
+    l.text.setAttribute('x', lx); l.text.setAttribute('y', ly + 4);
+    l.rect.setAttribute('x', lx - l.tw / 2 - 10); l.rect.setAttribute('y', ly - 11); l.rect.setAttribute('width', l.tw + 20);
+  }
+  for (const n of NODES) {
+    const key = [...sides[n.id]].sort().join('');
+    if (key === n.sides) continue;
+    n.sides = key;
+    for (const s of ['l','r','t','b']) n.el.classList.toggle('has-' + s, sides[n.id].has(s));
+  }
+}
+function updateAll(){ updateLanes(); updateEdges(); }
+let rafU = 0;
+function scheduleUpdate(){ if (!rafU) rafU = requestAnimationFrame(() => { rafU = 0; updateAll(); }); }
+
+/* =========================================================
+   ВИД: ПАНОРАМИРОВАНИЕ И МАСШТАБ
+   ========================================================= */
+const view = { s:1, tx:0, ty:0 };
+let viewTouched = false, layoutTouched = false;
+
+function applyView(){
+  world.style.transform = `translate(${view.tx}px,${view.ty}px) scale(${view.s})`;
+  let g = 22 * view.s; while (g < 14) g *= 2;
+  stage.style.backgroundSize = `${g}px ${g}px`;
+  stage.style.backgroundPosition = `${view.tx}px ${view.ty}px`;
+  zoomVal.textContent = Math.round(view.s * 100) + '%';
+}
+let animId = 0;
+function animateTo(s, tx, ty, dur = 450){
+  cancelAnimationFrame(animId);
+  if (reduceMotion) dur = 0;
+  const s0 = view.s, x0 = view.tx, y0 = view.ty, t0 = performance.now();
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const step = now => {
+    const t = dur ? Math.min(1, (now - t0) / dur) : 1, k = ease(t);
+    view.s = s0 + (s - s0) * k; view.tx = x0 + (tx - x0) * k; view.ty = y0 + (ty - y0) * k;
+    applyView();
+    if (t < 1) animId = requestAnimationFrame(step);
+  };
+  animId = requestAnimationFrame(step);
+}
+function avail(){
+  const W = stage.clientWidth, H = stage.clientHeight, open = panel.classList.contains('open');
+  const narrow = isNarrow();
+  const top = narrow ? 52 : 60, bottom = narrow ? 50 : 54;
+  let w = W, h = H - top - bottom;
+  if (open && !narrow) w = W - panel.offsetWidth - 24;
+  if (open && narrow) h = H - top - panel.offsetHeight - 16;
+  return { x:0, y:top, w:Math.max(w, 120), h:Math.max(h, 120) };
+}
+function viewFor(r, pad = 28, maxS = 1){
+  const A = avail();
+  const s = clamp(Math.min((A.w - pad * 2) / r.w, (A.h - pad * 2) / r.h), MIN_S, maxS);
+  return { s, tx: A.x + A.w / 2 - (r.x + r.w / 2) * s, ty: A.y + A.h / 2 - (r.y + r.h / 2) * s };
+}
+function contentRect(){
+  const rs = Object.values(laneRects);
+  const x0 = Math.min(...rs.map(r => r.x)), y0 = Math.min(...rs.map(r => r.y));
+  const x1 = Math.max(...rs.map(r => r.x + r.w)), y1 = Math.max(...rs.map(r => r.y + r.h));
+  return { x:x0, y:y0, w:x1 - x0, h:y1 - y0 };
+}
+function fitAll(animate){
+  const v = viewFor(contentRect(), isNarrow() ? 8 : 24);
+  if (animate) animateTo(v.s, v.tx, v.ty); else { Object.assign(view, v); applyView(); }
+}
+function focusPhase(id){
+  const v = viewFor(laneRects[id], 24, 1.05);
+  animateTo(v.s, v.tx, v.ty);
+  const el = laneEls[id];
+  el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1100);
+}
+function zoomAt(factor, px, py, animate){
+  const s = clamp(view.s * factor, MIN_S, MAX_S);
+  const wx = (px - view.tx) / view.s, wy = (py - view.ty) / view.s;
+  const tx = px - wx * s, ty = py - wy * s;
+  if (animate) animateTo(s, tx, ty, 260); else { cancelAnimationFrame(animId); view.s = s; view.tx = tx; view.ty = ty; applyView(); }
+}
+function zoomCenter(factor){ const A = avail(); viewTouched = true; zoomAt(factor, A.x + A.w / 2, A.y + A.h / 2, true); }
+function focusNode(id, minS = 0.85){
+  const n = byId[id], A = avail();
+  const s = clamp(Math.max(view.s, minS), MIN_S, 1.15);
+  animateTo(s, A.x + A.w / 2 - (n.x + n.w / 2) * s, A.y + A.h / 2 - (n.y + n.h / 2) * s);
+}
+function ensureVisible(id){
+  const n = byId[id], A = avail(), m = 16;
+  const x0 = n.x * view.s + view.tx, y0 = n.y * view.s + view.ty;
+  const x1 = x0 + n.w * view.s, y1 = y0 + n.h * view.s;
+  if (x0 >= A.x + m && x1 <= A.x + A.w - m && y0 >= A.y + m && y1 <= A.y + A.h - m) return;
+  animateTo(view.s, A.x + A.w / 2 - (n.x + n.w / 2) * view.s, A.y + A.h / 2 - (n.y + n.h / 2) * view.s);
+}
+
+/* =========================================================
+   ВЫДЕЛЕНИЕ И ПОДСВЕТКА
+   ========================================================= */
+let selectedId = null, hoverId = null;
+
+function setHover(id){
+  hoverId = id;
+  for (const e of [...edgeEls, ...loopEls]) e.g.classList.toggle('hover', !!id && (e.a === id || e.b === id));
+}
+function applyFocus(){
+  const sel = selectedId && byId[selectedId].phase !== 'px' ? selectedId : null;
+  const rel = new Set();
+  if (sel) {
+    rel.add(sel);
+    for (const e of [...edgeEls, ...loopEls]) { if (e.a === sel) rel.add(e.b); if (e.b === sel) rel.add(e.a); }
+  }
+  for (const n of NODES) {
+    n.el.classList.toggle('selected', n.id === selectedId);
+    n.el.classList.toggle('dim', !!sel && !rel.has(n.id));
+  }
+  for (const e of [...edgeEls, ...loopEls]) {
+    const on = !!sel && (e.a === sel || e.b === sel);
+    e.g.classList.toggle('active', on);
+    e.g.classList.toggle('dim', !!sel && !on);
+  }
+}
+function setHash(id){
+  try { history.replaceState(null, '', id ? '#' + id : location.pathname + location.search); } catch(e) {}
+}
+function select(id, opts = {}){
+  selectedId = id;
+  applyFocus();
+  setHash(id);
+  if (!id) { panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); return; }
+  hideHint();
+  if (isNarrow() && mpanel.classList.contains('open')) setModelsOpen(false);
+  if (isNarrow() && cpanel.classList.contains('open')) setCalcOpen(false);
+  renderPanel(id);
+  panel.classList.add('open'); panel.setAttribute('aria-hidden', 'false');
+  if (opts.center) { viewTouched = true; focusNode(id); }
+  else ensureVisible(id);
+}
+function step(dir){
+  const i = selectedId ? ORDER.indexOf(selectedId) : -1;
+  const j = clamp(i + dir, 0, ORDER.length - 1);
+  if (j !== i) select(ORDER[j], { center:true });
+}
+
+/* =========================================================
+   ПАНЕЛЬ ПОДРОБНОСТЕЙ
+   ========================================================= */
+function renderPanel(id){
+  const n = byId[id], ph = PHASES[n.phase], k = KINDS[n.kind];
+  panel.style.setProperty('--c', `var(--${n.phase})`);
+  panelMeta.innerHTML =
+    `<span class="chip">${esc(ph.eyebrow)} · ${esc(ph.name)}</span>`
+    + `<span class="chip neutral">${ICONS[n.icon || k.icon]}${esc(k.label)}</span>`
+    + (n.gate ? `<span class="chip gate">${esc(n.gate)} · quality gate</span>` : '');
+
+  const link = (m, note, icon = 'arrow') => `<button class="p-link" data-goto="${m.id}" style="--c:var(--${m.phase})"><span class="ln">${esc(m.num || '•')}</span><span class="lt">${esc(m.title)}${note ? `<span class="ll">${esc(note)}</span>` : ''}</span><span class="la">${ICONS[icon]}</span></button>`;
+  const ins = EDGES.filter(e => e[1] === id).map(e => [byId[e[0]], e[2] && e[2].note]);
+  const outs = EDGES.filter(e => e[0] === id).map(e => [byId[e[1]], e[2] && e[2].note]);
+  const loopsOut = LOOPS.filter(l => l.from === id), loopsIn = LOOPS.filter(l => l.to === id);
+  const sec = (title, html) => `<section class="p-sec"><h4>${title}</h4>${html}</section>`;
+
+  let h = `<h2 class="p-title">${n.num ? `<span class="p-n">${esc(n.num)}</span>` : ''}${esc(n.title)}</h2>`
+        + `<div class="p-actor">${esc(n.actor)}</div>`
+        + `<p class="p-purpose">${esc(n.purpose)}</p>`;
+  if (n.example) h += `<div class="p-example">${esc(n.example)}</div>`;
+  if (n.models) h += sec('LLM-модели этапа', `<div class="p-models">${n.models.map(u => {
+      const m = MODELS[u.m];
+      return `<div class="p-model" style="--t:var(--t${m.tier})">${meter(m.tier)}<div><b>${esc(m.name)}</b>${u.r ? ` <span class="pm-role">· ${esc(u.r)}</span>` : ''}<div class="pm-sub">Уровень ${m.tier}/5 «${esc(TIERS[m.tier].name)}» · ${esc(m.vendor)}</div></div><span class="pm-spec">${specIcons(m)}</span></div>`;
+    }).join('')}</div><p class="p-why"><b>Почему так:</b> ${esc(n.mwhy)}</p>`);
+  h += sec(n.methodsTitle || 'Как работает', `<ul class="p-list">${n.methods.map(m => `<li>${esc(m)}</li>`).join('')}</ul>`);
+  if (n.prompt) h += sec('Ключевая инструкция агенту', `<p class="p-prompt">${esc(n.prompt)}</p>`);
+  h += sec('Артефакты на выходе', `<div class="p-outs">${n.outs.map(o => `<span class="out">${esc(o)}</span>`).join('')}</div>`);
+  h += sec(n.kind === 'output' ? 'Условие готовности' : 'Критерий готовности', `<div class="p-box">${esc(n.done)}</div>`);
+  if (n.hitl) h += sec('Роль человека', `<div class="p-box human">${esc(n.hitl)}</div>`);
+  if (n.isAuto && n.autoNote) h += sec('Автономный режим', `<div class="p-box auto">${esc(n.autoNote)}</div>`);
+  if (ins.length || loopsIn.length) h += sec('Получает от', `<div class="p-links">${ins.map(([m, note]) => link(m, note)).join('')}${loopsIn.map(l => link(byId[l.from], '↺ ' + l.label, 'back')).join('')}</div>`);
+  if (outs.length) h += sec('Передаёт дальше', `<div class="p-links">${outs.map(([m, note]) => link(m, note)).join('')}</div>`);
+  if (loopsOut.length) h += sec('Возврат на доработку', `<div class="p-links">${loopsOut.map(l => link(byId[l.to], '↺ ' + l.label, 'back')).join('')}</div>`);
+  if (n.phase === 'px') h += sec('Связь с процессом', `<div class="p-box">Сквозной компонент: работает на всех фазах — от приёма сырой идеи до утверждения baseline.</div>`);
+
+  panelBody.innerHTML = h;
+  panelBody.scrollTop = 0;
+  const i = ORDER.indexOf(id);
+  tourPos.textContent = `${i + 1} / ${ORDER.length}`;
+  $('#prevBtn').disabled = i === 0;
+  $('#nextBtn').disabled = i === ORDER.length - 1;
+}
+panelBody.addEventListener('click', e => { const b = e.target.closest('[data-goto]'); if (b) select(b.dataset.goto, { center:true }); });
+
+/* =========================================================
+   ЛЕГЕНДА МОДЕЛЕЙ И РЕЖИМ РАСКРАСКИ
+   ========================================================= */
+const mpanel = $('#mpanel'), mpBody = $('#mpBody');
+let modelFocus = null;
+
+function renderModelsPanel(){
+  const usage = {};
+  for (const n of NODES) for (const u of (n.models || [])) (usage[u.m] ||= new Set()).add(n.id);
+  let h = `<p class="mp-intro">Цвет и высота «сигнала» ${meter(4).replace('class="meter"', 'class="meter" style="--t:var(--t4)"')} показывают уровень «разума» модели — глубину рассуждений и качество ответов. Значок — специализация: поисковая модель и лучший «кодер» сильны в разном. Нажмите на модель, чтобы подсветить этапы, где она работает.</p>`
+    + `<div class="mp-row"><span>Раскрасить карточки:</span><span class="seg" role="group" aria-label="Раскраска карточек"><button data-mode="phases" aria-pressed="${!document.body.classList.contains('color-models')}">по фазам</button><button data-mode="models" aria-pressed="${document.body.classList.contains('color-models')}">по моделям</button></span></div>`;
+  for (const t of [5, 4, 3, 2, 1]) {
+    const ids = Object.keys(MODELS).filter(id => MODELS[id].tier === t);
+    h += `<section class="tier" style="--t:var(--t${t})"><div class="tier-head">${meter(t)}<span class="tier-n">${t}/5</span><b>${esc(TIERS[t].name)}</b></div><p class="tier-desc">${esc(TIERS[t].desc)}</p>`;
+    for (const id of ids) {
+      const m = MODELS[id], cnt = usage[id] ? usage[id].size : 0;
+      h += `<button class="mrow" data-model="${id}" aria-pressed="${modelFocus === id}"><span><b>${esc(m.name)}</b><span class="mrow-v">${esc(m.vendor)}${m.price ? ' · ' + esc(m.price) : ''}</span><span class="mrow-note">${esc(m.note)}</span></span><span class="mrow-spec">${specIcons(m)}</span><span class="mrow-use" title="Этапов, где используется">${cnt}</span></button>`;
+    }
+    h += `</section>`;
+  }
+  h += `<section class="tier"><div class="tier-head"><b>Специализации</b></div><div class="spec-grid">${Object.values(SPECS).map(s => `<span class="spec">${ICONS[s.icon]}${esc(s.label)}</span>`).join('')}</div></section>`;
+  h += `<div class="mp-foot">Уровни — экспертная оценка на ноябрь 2026 года, а не результат одного бенчмарка. Модели обновляются каждые несколько месяцев: держите выбор модели для каждого агента в конфигурации и перепроверяйте его на собственном наборе эталонных задач.</div>`;
+  mpBody.innerHTML = h;
+}
+function setModelFocus(id){
+  modelFocus = id;
+  if (id) nodesEl.style.setProperty('--mf', `var(--t${MODELS[id].tier})`);
+  for (const n of NODES) {
+    const uses = !!id && (n.models || []).some(u => u.m === id);
+    n.el.classList.toggle('mhit', uses);
+    n.el.classList.toggle('mdim', !!id && !uses);
+  }
+  mpBody.querySelectorAll('.mrow').forEach(r => r.setAttribute('aria-pressed', String(r.dataset.model === id)));
+}
+function setModelsOpen(open){
+  if (open) renderModelsPanel();
+  mpanel.classList.toggle('open', open);
+  mpanel.setAttribute('aria-hidden', String(!open));
+  $('#modelsBtn').setAttribute('aria-pressed', String(open));
+  if (!open) setModelFocus(null);
+  if (open) { hideHint(); setCalcOpen(false); if (isNarrow() && selectedId) select(null); }
+}
+function setColorMode(mode, persist = true){
+  document.body.classList.toggle('color-models', mode === 'models');
+  document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+  if (persist) store.set(LS_COLOR, mode);
+}
+$('#lgModels').innerHTML = [5, 4, 3, 2, 1].map(t => `<span class="lg-item" style="--t:var(--t${t})">${meter(t)}${esc(TIERS[t].name)}</span>`).join('');
+document.addEventListener('click', e => {
+  const mb = e.target.closest('[data-mode]'); if (mb) { setColorMode(mb.dataset.mode); return; }
+  if (e.target.closest('[data-open-models]')) { setModelsOpen(true); return; }
+  const row = e.target.closest('.mrow'); if (row) setModelFocus(modelFocus === row.dataset.model ? null : row.dataset.model);
+});
+$('#modelsBtn').addEventListener('click', () => setModelsOpen(!mpanel.classList.contains('open')));
+$('#mpClose').addEventListener('click', () => setModelsOpen(false));
+setColorMode(store.get(LS_COLOR) === 'models' ? 'models' : 'phases', false);
+
+/* =========================================================
+   АВТОНОМНЫЙ РЕЖИМ — ПЕРЕКЛЮЧЕНИЕ
+   ========================================================= */
+const LS_AUTO = 'aiReqPipeline.auto', LS_CALC = 'aiReqPipeline.calc';
+function syncAutoUi(){
+  $('#autoBtn').setAttribute('aria-pressed', String(autoMode));
+  $('#autoBtn').title = autoMode ? 'Автономный режим включён — вернуть человека в контур (A)' : 'Автономный режим: решения без участия человека (A)';
+  $('#modePill').hidden = !autoMode;
+  for (const [p, note] of Object.entries(PHASE_AUTO_NOTE)) laneEls[p].querySelector('.lane-note').textContent = autoMode ? note : PHASES[p].note;
+}
+function setAutoMode(on, persist = true){
+  autoMode = on;
+  applyModeData();
+  NODES.forEach(renderNode);
+  syncAutoUi();
+  if (persist) store.set(LS_AUTO, on ? '1' : '0');
+  measure();
+  if (!restored && !layoutTouched) { defaultLayout(); NODES.forEach(place); }
+  updateAll();
+  applyFocus();
+  if (modelFocus) setModelFocus(modelFocus);
+  if (selectedId) renderPanel(selectedId);
+  if (mpanel.classList.contains('open')) renderModelsPanel();
+  updateCost();
+}
+$('#autoBtn').addEventListener('click', () => setAutoMode(!autoMode));
+
+/* =========================================================
+   КАЛЬКУЛЯТОР СТОИМОСТИ И ВРЕМЕНИ ПРОГОНА
+   Объёмы токенов — экспертная модель; цены редактируются в панели
+   ========================================================= */
+const PRICES = { fable:[10,50], opus:[4,20], gpt:[2,10], sonnet:[2,10], dsPro:[1.32,3.96], sonar:[2,8], haiku:[0.1,0.5], embed:[0.02,0], asr:[0,0] };
+let searchPrice = 5;   // $ за 1000 запросов веб-поиска Sonar
+const SPEED = { fable:40, opus:55, gpt:60, sonnet:85, dsPro:45, sonar:35, haiku:150, embed:5000, asr:5000 };   // токенов/с на выходе
+const REWORK = new Set(['storymap','reqwriter','acceptance','testgen','quality','critic','coverage','trace']);   // повторяются в циклах доработки
+const TIME_GROUPS = [['clarify'],['frame'],['competitors','voc','domain','compliance'],['factcheck'],['gap'],['vision','personas'],['storymap','model'],
+  ['reqwriter'],['acceptance'],['testgen'],['quality'],['critic'],['coverage'],['simulation'],['usertest'],['benchmark'],['feasibility'],['prioritize'],['debate'],['signoff'],['orch'],['ctx'],['hitl']];
+const CALC_FIELDS = [
+  { id:'fr',       label:'Функциональных требований',       min:30,  max:600,   step:10,  def:150 },
+  { id:'reviews',  label:'Отзывов для анализа (этап 2.2)',  min:500, max:20000, step:500, def:3000 },
+  { id:'comp',     label:'Конкурентов',                     min:3,   max:20,    step:1,   def:8 },
+  { id:'personas', label:'Персон',                          min:3,   max:10,    step:1,   def:5 },
+  { id:'iters',    label:'Итераций доработки (циклы ↺)',    min:1,   max:4,     step:1,   def:2 },
+];
+const calc = Object.fromEntries(CALC_FIELDS.map(f => [f.id, f.def]));
+calc.opt = true;
+try {
+  const s = JSON.parse(store.get(LS_CALC) || 'null');
+  if (s) {
+    for (const f of CALC_FIELDS) if (Number.isFinite(s[f.id])) calc[f.id] = clamp(s[f.id], f.min, f.max);
+    if (typeof s.opt === 'boolean') calc.opt = s.opt;
+    if (s.prices) for (const k in PRICES) { const p = s.prices[k]; if (Array.isArray(p) && p.length === 2 && p.every(v => Number.isFinite(v) && v >= 0)) PRICES[k] = p; }
+    if (Number.isFinite(s.search) && s.search >= 0) searchPrice = s.search;
+  }
+} catch(e) {}
+
+const K = 1000;
+/* нагрузка этапа: m — модель, i/o — токены на входе/выходе, s — веб-запросы, p — параллельность */
+function loads(id, P){
+  const N = P.fr, R = P.reviews, C = P.comp, Ps = P.personas;
+  switch (id) {
+    case 'clarify':     return [{m:'opus', i:40*K, o:8*K}];
+    case 'frame':       return [{m:'opus', i:20*K, o:5*K}];
+    case 'competitors': return [{m:'sonar', i:25*K*C, o:4*K*C, s:12*C, p:C}, {m:'sonnet', i:6*K*C + 10*K, o:1.5*K*C}];
+    case 'voc':         return [{m:'haiku', i:350*R, o:60*R, p:20}, {m:'sonnet', i:80*K + 15*R, o:12*K}];
+    case 'domain':      return [{m:'sonar', i:120*K, o:15*K, s:40, p:4}, {m:'opus', i:150*K, o:25*K}];
+    case 'compliance':  return [{m:'sonar', i:80*K, o:10*K, s:25, p:4}, {m:'opus', i:90*K, o:15*K}];
+    case 'factcheck': { const c = 30*C + 150; return [{m:'sonar', i:2.5*K*c, o:250*c, s:c, p:10}, {m:'gpt', i:2*K*c, o:250*c, p:10}]; }
+    case 'gap':         return [{m:'fable', i:180*K, o:25*K}];
+    case 'vision':      return [{m:'fable', i:80*K, o:12*K}];
+    case 'personas':    return [{m:'sonnet', i:70*K, o:4*K*Ps}];
+    case 'storymap':    return [{m:'sonnet', i:100*K, o:400*N, p:2}];
+    case 'model':       return [{m:'opus', i:120*K, o:30*K + 60*N}];
+    case 'reqwriter':   return [{m:'opus', i:150*K + 1.2*K*N, o:350*N, p:4}];
+    case 'acceptance':  return [{m:'sonnet', i:1.5*K*N, o:500*N, p:8}];
+    case 'testgen':     return [{m:'opus', i:60*K, o:25*K}, {m:'sonnet', i:2*K*N, o:900*N, p:8}];
+    case 'quality':     return [{m:'haiku', i:1.5*K*N, o:200*N, p:20}];
+    case 'critic':      return [{m:'gpt', i:60*K + 700*N, o:25*K + 30*N, p:2}];
+    case 'coverage':    return [{m:'sonnet', i:50*K + 800*N, o:12*K + 40*N}];
+    case 'simulation': { const x = Ps*6; return [{m:'sonnet', i:12.5*K*x, o:1.5*K*x, p:Ps}, {m:'dsPro', i:12.5*K*x, o:1.5*K*x, p:Ps}]; }
+    case 'usertest':    return [{m:'opus', i:120*K + K*N, o:80*K + 300*N}, {m:'sonnet', i:160*K, o:24*K, p:4}];
+    case 'benchmark':   return [{m:'fable', i:100*K + 400*N, o:18*K}, {m:'sonar', i:10*K*C, o:1.5*K*C, s:5*C, p:C}];
+    case 'feasibility': return [{m:'opus', i:80*K + 600*N, o:15*K + 150*N, p:2}];
+    case 'prioritize':  return [{m:'opus', i:40*K + 500*N, o:8*K + 80*N}];
+    case 'debate':      return [{m:'fable', i:200*K, o:25*K}, {m:'sonnet', i:400*K, o:50*K, p:5}];
+    case 'signoff':     return autoMode ? [{m:'fable', i:80*K + 300*N, o:8*K}] : [{m:'sonnet', i:60*K + 300*N, o:8*K}];
+    case 'orch':        return [{m:'opus', i:200*K, o:16*K}];
+    case 'ctx':         return [{m:'sonnet', i:24*60*K, o:24*5*K, p:3}];
+    case 'kb':          return [{m:'embed', i:350*R + 25*K*C + 400*K + 2*K*N, o:0, p:50}];
+    case 'trace':       return [{m:'haiku', i:50*K + K*N, o:150*N, p:10}];
+    case 'hitl':        return autoMode ? [{m:'fable', i:8*60*K, o:8*6*K}] : [{m:'sonnet', i:8*40*K, o:8*3*K}];
+    default:            return [];
+  }
+}
+function estimate(){
+  const rf = 1 + 0.4 * (calc.iters - 1);
+  const byModel = {}, byStage = {}, sec = {};
+  let total = 0;
+  for (const n of NODES) {
+    const L = loads(n.id, calc);
+    if (!L.length) continue;
+    const mult = REWORK.has(n.id) ? rf : 1;
+    let c = 0, t = 0;
+    for (const x of L) {
+      const [pi, po] = PRICES[x.m];
+      const v = (x.i / 1e6 * pi * (calc.opt ? 0.5 : 1) + x.o / 1e6 * po + (x.s || 0) / 1000 * searchPrice) * mult;
+      c += v; byModel[x.m] = (byModel[x.m] || 0) + v;
+      t += ((x.o / SPEED[x.m]) + (x.s || 0) * 4 + x.i / 40000) / (x.p || 1) * mult + 3;
+    }
+    byStage[n.id] = c; sec[n.id] = t; total += c;
+  }
+  let time = 0;
+  for (const g of TIME_GROUPS) time += Math.max(0, ...g.map(id => sec[id] || 0));
+  return { total, byModel, byStage, time };
+}
+const fmtUsd = v => '$' + (v < 10 ? v.toFixed(1).replace('.', ',') : Math.round(v).toLocaleString('ru-RU'));
+const fmtNum = v => Number(v).toLocaleString('ru-RU');
+const fmtTime = s => { const m = Math.max(1, Math.round(s / 60)), h = Math.floor(m / 60), r = m % 60; return h ? `${h} ч${r ? ' ' + r + ' мин' : ''}` : `${r} мин`; };
+const fmtShort = s => s >= 3600 ? (s / 3600).toFixed(1).replace('.', ',').replace(',0', '') + ' ч' : Math.max(1, Math.round(s / 60)) + ' мин';
+
+const cpanel = $('#cpanel'), cpBody = $('#cpBody');
+function buildCalc(){
+  let h = `<div id="calcRes"></div><div class="calc-h">Параметры прогона</div>`;
+  for (const f of CALC_FIELDS) h += `<div class="calc-row"><label for="cf-${f.id}">${esc(f.label)}</label><output id="co-${f.id}">${fmtNum(calc[f.id])}</output><input type="range" id="cf-${f.id}" data-f="${f.id}" min="${f.min}" max="${f.max}" step="${f.step}" value="${calc[f.id]}"></div>`;
+  h += `<label class="calc-check"><input type="checkbox" id="cf-opt"${calc.opt ? ' checked' : ''}><span>Кеширование промптов и пакетная обработка <span style="color:var(--text-3)">— входные токены примерно вдвое дешевле</span></span></label>`;
+  h += `<div id="calcBreak"></div>`;
+  h += `<details class="calc-prices"><summary>Цены моделей, $ за 1M токенов</summary><div class="price-grid"><span class="ph">Модель</span><span class="ph">Вход</span><span class="ph">Выход</span>`
+     + Object.keys(PRICES).filter(k => k !== 'asr').map(k => `<span>${esc(MODELS[k].name)}</span><input type="number" min="0" step="0.01" data-p="${k}" data-i="0" value="${PRICES[k][0]}" aria-label="${esc(MODELS[k].name)} — вход"><input type="number" min="0" step="0.01" data-p="${k}" data-i="1" value="${PRICES[k][1]}" aria-label="${esc(MODELS[k].name)} — выход">`).join('')
+     + `<span>Веб-поиск Sonar, $ за 1000 запросов</span><input type="number" min="0" step="0.5" data-search value="${searchPrice}" aria-label="Веб-поиск Sonar, $ за 1000 запросов"><span></span></div></details>`;
+  h += `<div class="mp-foot">Это порядок величин, а не смета. Объёмы токенов на каждом этапе — экспертная модель: реальные значения зависят от предметной области и длины артефактов. Цены Claude — тарифы API Anthropic; Sonar — по данным OpenRouter; GPT-6.1 и DeepSeek V4-Pro — по данным агрегаторов, проверьте у провайдеров. Работа людей, оплата респондентов и инфраструктура не учтены.</div>`;
+  cpBody.innerHTML = h;
+}
+function updateCost(){
+  const r = estimate();
+  $('#costLbl').textContent = `≈ ${fmtUsd(r.total)} · ${fmtShort(r.time)}`;
+  if (!cpanel.classList.contains('open')) return;
+  const people = autoMode
+    ? `<b>Без ожидания решений людей.</b> Единственная «человеческая» задержка — немодерируемый тест с респондентами (5.5), обычно около суток.`
+    : `<b>+ 4–7 рабочих дней с участием людей:</b> интервью с автором идеи и утверждения на контрольных точках — 1–2 дня ожидания, тест с реальными пользователями (5.5) — 3–5 дней.`;
+  $('#calcRes').innerHTML = `<div class="calc-big"><div class="cb"><div class="cb-label">LLM и поиск</div><div class="cb-val">≈ ${fmtUsd(r.total)}</div><div class="cb-sub">диапазон ${fmtUsd(r.total * 0.65)}–${fmtUsd(r.total * 1.35)}</div></div>`
+    + `<div class="cb"><div class="cb-label">Работа агентов</div><div class="cb-val">≈ ${fmtTime(r.time)}</div><div class="cb-sub">с учётом параллельной работы</div></div></div>`
+    + `<div class="calc-people">${people}</div>`;
+  const ms = Object.entries(r.byModel).filter(([, v]) => v >= 0.05).sort((a, b) => b[1] - a[1]);
+  const bar = ms.map(([m, v]) => `<i style="--t:var(--t${MODELS[m].tier});flex:${v.toFixed(3)} 1 0" title="${esc(MODELS[m].name)}: ${fmtUsd(v)}"></i>`).join('');
+  const list = ms.map(([m, v]) => `<div class="calc-li" style="--t:var(--t${MODELS[m].tier})">${meter(MODELS[m].tier)}<span>${esc(MODELS[m].name)}</span><span class="v">${fmtUsd(v)}</span><span class="pct">${Math.round(v / r.total * 100)}%</span></div>`).join('');
+  const top = Object.entries(r.byStage).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([id, v]) => `<div class="calc-li"><span class="n">${esc(byId[id].num || '•')}</span><span>${esc(byId[id].title)}</span><span class="v">${fmtUsd(v)}</span><span class="pct">${Math.round(v / r.total * 100)}%</span></div>`).join('');
+  $('#calcBreak').innerHTML = `<div class="calc-h">По моделям</div><div class="calc-bar">${bar}</div><div class="calc-list">${list}</div><div class="calc-h">Самые дорогие этапы</div><div class="calc-list">${top}</div>`;
+}
+function onCalcInput(e){
+  const t = e.target;
+  if (t.dataset.f) { calc[t.dataset.f] = Number(t.value); $('#co-' + t.dataset.f).textContent = fmtNum(calc[t.dataset.f]); }
+  else if (t.id === 'cf-opt') calc.opt = t.checked;
+  else if (t.dataset.p) { const v = parseFloat(t.value); if (Number.isFinite(v) && v >= 0) PRICES[t.dataset.p][+t.dataset.i] = v; }
+  else if ('search' in t.dataset) { const v = parseFloat(t.value); if (Number.isFinite(v) && v >= 0) searchPrice = v; }
+  else return;
+  store.set(LS_CALC, JSON.stringify({ ...calc, prices:PRICES, search:searchPrice }));
+  updateCost();
+}
+cpBody.addEventListener('input', onCalcInput);
+cpBody.addEventListener('change', onCalcInput);
+function setCalcOpen(open){
+  if (open) { if (!cpBody.childElementCount) buildCalc(); setModelsOpen(false); }
+  cpanel.classList.toggle('open', open);
+  cpanel.setAttribute('aria-hidden', String(!open));
+  $('#costBtn').setAttribute('aria-pressed', String(open));
+  if (open) { hideHint(); if (isNarrow() && selectedId) select(null); updateCost(); }
+}
+$('#costBtn').addEventListener('click', () => setCalcOpen(!cpanel.classList.contains('open')));
+$('#cpClose').addEventListener('click', () => setCalcOpen(false));
+$('#panelClose').addEventListener('click', () => select(null));
+$('#prevBtn').addEventListener('click', () => step(-1));
+$('#nextBtn').addEventListener('click', () => step(1));
+
+/* =========================================================
+   ЖЕСТЫ: ПЕРЕТАСКИВАНИЕ, ПАН, ЩИПОК, КОЛЕСО
+   ========================================================= */
+const pointers = new Map();
+let gesture = null;
+function hideHint(){ hint.classList.add('hide'); }
+setTimeout(hideHint, 9000);
+
+stage.addEventListener('pointerdown', e => {
+  if (e.target.closest('.ui')) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  try { stage.setPointerCapture(e.pointerId); } catch(_) {}
+  hideHint();
+  cancelAnimationFrame(animId);
+  if (pointers.size === 2) {
+    if (gesture && gesture.type === 'drag') gesture.el.classList.remove('dragging');
+    const [a, b] = [...pointers.values()];
+    gesture = { type:'pinch', d0:Math.hypot(a.x - b.x, a.y - b.y) || 1, mid0:{ x:(a.x + b.x) / 2, y:(a.y + b.y) / 2 }, s0:view.s, tx0:view.tx, ty0:view.ty };
+    viewTouched = true;
+    return;
+  }
+  if (pointers.size > 2) return;
+  const card = e.target.closest('.node');
+  if (card) {
+    const n = byId[card.dataset.id];
+    gesture = { type:'drag', id:n.id, el:card, x0:e.clientX, y0:e.clientY, nx:n.x, ny:n.y, moved:false };
+  } else {
+    gesture = { type:'pan', x0:e.clientX, y0:e.clientY, tx0:view.tx, ty0:view.ty, moved:false };
+  }
+});
+stage.addEventListener('pointermove', e => {
+  if (!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  if (!gesture) return;
+  if (gesture.type === 'pinch') {
+    if (pointers.size < 2) return;
+    const [a, b] = [...pointers.values()];
+    const rect = stage.getBoundingClientRect();
+    const d = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+    const mid = { x:(a.x + b.x) / 2 - rect.left, y:(a.y + b.y) / 2 - rect.top };
+    const m0 = { x:gesture.mid0.x - rect.left, y:gesture.mid0.y - rect.top };
+    const s = clamp(gesture.s0 * d / gesture.d0, MIN_S, MAX_S);
+    const wx = (m0.x - gesture.tx0) / gesture.s0, wy = (m0.y - gesture.ty0) / gesture.s0;
+    view.s = s; view.tx = mid.x - wx * s; view.ty = mid.y - wy * s;
+    applyView();
+    return;
+  }
+  const dx = e.clientX - gesture.x0, dy = e.clientY - gesture.y0;
+  if (!gesture.moved) {
+    if (Math.hypot(dx, dy) < 5) return;
+    gesture.moved = true;
+    if (gesture.type === 'drag') { gesture.el.classList.add('dragging'); layoutTouched = true; }
+    else { stage.classList.add('panning'); viewTouched = true; }
+  }
+  if (gesture.type === 'drag') {
+    const n = byId[gesture.id];
+    n.x = Math.round(gesture.nx + dx / view.s); n.y = Math.round(gesture.ny + dy / view.s);
+    place(n); scheduleUpdate();
+  } else {
+    view.tx = gesture.tx0 + dx; view.ty = gesture.ty0 + dy; applyView();
+  }
+});
+function endPointer(e, cancelled){
+  if (!pointers.has(e.pointerId)) return;
+  pointers.delete(e.pointerId);
+  if (!gesture) return;
+  if (gesture.type === 'pinch') {
+    if (pointers.size === 1) {
+      const p = [...pointers.values()][0];
+      gesture = { type:'pan', x0:p.x, y0:p.y, tx0:view.tx, ty0:view.ty, moved:true };
+    } else if (pointers.size === 0) gesture = null;
+    return;
+  }
+  if (gesture.type === 'drag') {
+    gesture.el.classList.remove('dragging');
+    if (gesture.moved) saveLayout();
+    else if (!cancelled) select(gesture.id);
+  } else if (gesture.type === 'pan') {
+    stage.classList.remove('panning');
+    if (!gesture.moved && !cancelled) select(null);
+  }
+  gesture = null;
+}
+stage.addEventListener('pointerup', e => endPointer(e, false));
+stage.addEventListener('pointercancel', e => endPointer(e, true));
+
+stage.addEventListener('wheel', e => {
+  if (e.target.closest('.panel, .mpanel')) return;
+  e.preventDefault();
+  hideHint(); viewTouched = true;
+  const rect = stage.getBoundingClientRect();
+  let dy = e.deltaY; if (e.deltaMode === 1) dy *= 16; else if (e.deltaMode === 2) dy *= 400;
+  zoomAt(Math.exp(-clamp(dy, -120, 120) * 0.0018), e.clientX - rect.left, e.clientY - rect.top, false);
+}, { passive:false });
+
+/* =========================================================
+   ПАНЕЛЬ ИНСТРУМЕНТОВ, КЛАВИАТУРА, ТЕМА
+   ========================================================= */
+$('#zoomIn').addEventListener('click', () => zoomCenter(1.25));
+$('#zoomOut').addEventListener('click', () => zoomCenter(1 / 1.25));
+$('#zoomVal').addEventListener('click', () => { const A = avail(); viewTouched = true; zoomAt(1 / view.s, A.x + A.w / 2, A.y + A.h / 2, true); });
+$('#fitBtn').addEventListener('click', () => { viewTouched = true; fitAll(true); });
+$('#tourBtn').addEventListener('click', () => { hideHint(); selectedId ? step(1) : select(ORDER[0], { center:true }); });
+$('#flowBtn').addEventListener('click', e => {
+  const on = !stage.classList.contains('flow-all');
+  stage.classList.toggle('flow-all', on);
+  e.currentTarget.setAttribute('aria-pressed', String(on));
+});
+$('#resetBtn').addEventListener('click', () => {
+  store.del(LS_LAYOUT); layoutTouched = false;
+  measure(); defaultLayout(); NODES.forEach(place); updateAll(); fitAll(true);
+});
+const lg = $('#legend');
+$('#lgToggle').addEventListener('click', () => {
+  const open = !lg.classList.contains('open');
+  lg.classList.toggle('open', open); $('#lgToggle').setAttribute('aria-expanded', String(open));
+});
+
+const themeBtn = $('#themeBtn');
+const sysDark = window.matchMedia('(prefers-color-scheme: dark)');
+function effectiveTheme(){ return document.documentElement.dataset.theme || (sysDark.matches ? 'dark' : 'light'); }
+function syncThemeIcon(){
+  const dark = effectiveTheme() === 'dark';
+  themeBtn.innerHTML = ICONS[dark ? 'sun' : 'moon'];
+  themeBtn.title = dark ? 'Светлая тема' : 'Тёмная тема';
+  themeBtn.setAttribute('aria-label', themeBtn.title);
+}
+(() => { const t = store.get(LS_THEME); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; syncThemeIcon(); })();
+themeBtn.addEventListener('click', () => {
+  const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next; store.set(LS_THEME, next); syncThemeIcon();
+});
+sysDark.addEventListener && sysDark.addEventListener('change', syncThemeIcon);
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.target.closest && e.target.closest('input, textarea, select')) { if (e.key === 'Escape') e.target.blur(); return; }
+  if (e.key === 'Escape') { if (selectedId) select(null); else { setModelsOpen(false); setCalcOpen(false); } return; }
+  const key = e.key.toLowerCase();
+  if (key === 'm' || key === 'ь') { setModelsOpen(!mpanel.classList.contains('open')); return; }
+  if (key === 'c' || key === 'с') { setCalcOpen(!cpanel.classList.contains('open')); return; }
+  if (key === 'a' || key === 'ф') { setAutoMode(!autoMode); return; }
+  if (e.key === 'ArrowRight' && (selectedId || document.activeElement === document.body)) { e.preventDefault(); selectedId ? step(1) : select(ORDER[0], { center:true }); return; }
+  if (e.key === 'ArrowLeft' && selectedId) { e.preventDefault(); step(-1); return; }
+  if (e.key === '+' || e.key === '=') { zoomCenter(1.25); return; }
+  if (e.key === '-' || e.key === '_') { zoomCenter(1 / 1.25); return; }
+  if (e.key === '0') { viewTouched = true; fitAll(true); }
+});
+
+if (window.matchMedia('(pointer: coarse)').matches || isNarrow()) {
+  hint.textContent = 'Щипок — масштаб · Тяните фон — перемещение · Нажмите на карточку — подробности';
+}
+
+/* =========================================================
+   СТАРТ
+   ========================================================= */
+(() => {
+  const q = new URLSearchParams(location.search).get('auto');
+  autoMode = q != null ? q === '1' : store.get(LS_AUTO) === '1';
+  if (autoMode) { applyModeData(); NODES.forEach(renderNode); }
+  syncAutoUi();
+})();
+updateCost();
+measure();
+const restored = loadLayout();
+if (!restored) defaultLayout();
+NODES.forEach(place);
+updateAll();
+fitAll(false);
+
+const openFromHash = () => {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (id === 'models') setModelsOpen(true);
+  else if (id === 'cost') setCalcOpen(true);
+  else if (byId[id]) select(id, { center:true });
+};
+(() => { const c = new URLSearchParams(location.search).get('color'); if (c === 'models' || c === 'phases') setColorMode(c, false); })();
+const relayout = () => {
+  measure();
+  if (!restored && !layoutTouched) { defaultLayout(); NODES.forEach(place); }
+  loopEls.forEach(l => { l.tw = 0; });
+  updateAll();
+  if (selectedId) { const id = selectedId; selectedId = null; select(id, { center:true }); }
+  else if (!viewTouched) fitAll(false);
+};
+openFromHash();
+window.addEventListener('hashchange', openFromHash);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+let rT = 0;
+window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (!viewTouched) fitAll(false); }, 120); });
+})();
+</script>
+</body>
+</html>
